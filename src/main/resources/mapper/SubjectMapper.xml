@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xyz.lengmaomao.autopapersystem.mapper.SubjectMapper">
+    <resultMap id="subject" type="xyz.lengmaomao.autopapersystem.beans.Subject">
+        <association property="subjectCourse" column="subject_course"/>
+        <association property="subjectKnowledge" column="subject_knowledge"/>
+    </resultMap>
+<!--    查询题目-->
+    <select id="getSubject" resultMap="subject">
+        SELECT * FROM subject LEFT JOIN course ON subject_course = course_id LEFT JOIN knowledge ON subject_knowledge = knowledge_id WHERE subject_id = #{subjectId}
+    </select>
+<!--    删除题目-->
+    <delete id="deleteSubject">
+        <if test="subjectId != 0">
+        DELETE FROM subject WHERE subject_id = #{subjectId}
+        </if>
+    </delete>
+<!--    修改题目-->
+    <update id="updateSubject">
+        UPDATE subject
+        <set>
+            <if test="subjectScore != '' and subjectScore != null">
+                subject_score = #{subjectScore} ,
+            </if>
+            <if test="subjectDifficulty != '' and subjectDifficulty != null">
+                subject_difficulty = #{subjectDifficulty} ,
+            </if>
+            <if test="subjectType != '' and subjectType != null">
+                subject_type = #{subjectType} ,
+            </if>
+            <if test="subjectDescribe != '' and subjectDescribe != null">
+                subject_describe = #{subjectDescribe} ,
+            </if>
+            <if test="subjectAnswer != '' and subjectAnswer != null">
+                subject_answer = #{subjectAnswer}
+            </if>
+            <if test="subjectCourse != '' and subjectCourse != null">
+                subject_course = #{subjectCourse.courseId}
+            </if>
+            <if test="subjectKnowledge!=null">
+                subject_knowledge = #{subjectKnowledge.knowledgeId}
+            </if>
+        </set>
+    </update>
+<!--    添加题目-->
+    <insert id="addSubject" keyProperty="subjectId" useGeneratedKeys="true">
+        INSERT INTO subject
+        (subject_score,subject_difficulty,subject_type,subject_describe,subject_answer,subject_course,subject_knowledge)
+        VALUES
+        (#{subjectScore},#{subjectDifficulty},#{subjectType},#{subjectDescribe},#{subjectAnswer},#{subjectCourse.courseId},#{subjectKnowledge.knowledgeId})
+    </insert>
+<!--    获取试卷的题目列表-->
+    <select id="getSubjectByPaper" resultType="xyz.lengmaomao.autopapersystem.beans.Subject">
+        SELECT a.subject_id,a.subject_score,a.subject_difficulty,a.subject_type,a.subject_describe,a.subject_answer
+        FROM subject a
+        LEFT JOIN paper_subject stag
+        ON a.subject_id = stag.subject_id
+        LEFT JOIN paper b
+        ON stag.paper_id = b.paper_id
+        WHERE b.paper_id = #{paperId}
+    </select>
+<!--    题目模糊查询-->
+    <select id="getSubjectByTemplate" resultMap="subject">
+        SELECT * FROM subject LEFT JOIN knowledge ON subject_knowledge = knowledge_id LEFT JOIN course ON subject_course = course_id
+        <where>
+            <if test="subjectType != null">
+                AND subject_type LIKE #{subjectType}
+            </if>
+            <if test="subjectDescribe != null">
+                AND subject_describe LIKE "%"#{subjectDescribe}"%"
+            </if>
+            <if test="subjectDifficulty != 0">
+                AND subject_difficulty LIKE #{subjectDifficulty}
+            </if>
+            <if test="subjectKnowledge != null">
+                AND knowledge_content LIKE "%"#{subjectKnowledge.knowledgeContent}"%"
+            </if>
+            <if test="subjectCourse != null">
+                AND course_name LIKE "%"#{subjectCourse.courseName}"%"
+            </if>
+        </where>
+    </select>
+<!--    查询所有题目-->
+    <select id="getAllSubject">
+        SELECT * FROM subject
+    </select>
+</mapper>

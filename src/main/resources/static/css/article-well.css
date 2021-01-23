@@ -1,0 +1,129 @@
+.article-well{
+    background: rgba(255,255,255,0.85);
+}
+/*回复样式*/
+.reply-well{
+    background: rgba(255,255,255,0.85);
+}
+#reply-input{
+    resize: none;
+    width: 100%;
+    height: 80px;
+    font-size: large;
+}
+#reply-btn{
+
+}
+/*重写md式样*/
+.article-well table{
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+}
+.article-well thead{
+    display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
+    box-sizing: border-box;
+
+}
+.article-well tbody{
+    display: table-row-group;
+    vertical-align: middle;
+    border-color: inherit;
+    box-sizing: border-box;
+}
+.article-well tr{
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+}
+.article-show-title{
+    color:#3e8f3e;
+}
+.article-well img{
+    width: 100%;
+    max-height: 800px;
+}
+.pic-modal-con{max-width: 2500px}
+.pic-modal-con img{
+    width: 100%;
+    max-height: 1200px;
+}
+blockquote{
+    background: rgba(40,100,23,0.2);
+}
+
+.comment-block{
+    margin: 5px;
+}
+
+.comment-body{
+    width: 100%;
+    min-height: 150px;
+    display: flex;
+}
+
+.comment-user{
+    width: 20%;
+    text-align: center;
+}
+.comment-user img{
+    width: 100px;
+    height: 100px;
+}
+.comment-user a{
+    line-height: 45px;
+}
+.comment-content{
+    width: 80%;
+    left: 20%;
+}
+
+.comment-foot{
+    color: rgb(153,153,153);
+    width: 100%;
+    border-bottom-style: solid;
+    border-color: black;
+    border-width: thin;
+    border-color: rgb(225,228,230);
+    text-align: right;
+}
+
+.comment-foot i{
+    margin: 3px;
+}
+
+ul.nav-tabs{
+    margin-top: 20px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
+}
+ul.nav-tabs li{
+    margin: 0;
+    border-top: 1px solid #ddd;
+}
+ul.nav-tabs li:first-child{
+    border-top: none;
+}
+ul.nav-tabs li a{
+    margin: 0;
+    padding: 8px 16px;
+    border-radius: 0;
+}
+ul.nav-tabs li.active a, ul.nav-tabs li.active a:hover{
+    color: #fff;
+    background: #0088cc;
+    border: 1px solid #0088cc;
+}
+ul.nav-tabs li:first-child a{
+    border-radius: 4px 4px 0 0;
+}
+ul.nav-tabs li:last-child a{
+    border-radius: 0 0 4px 4px;
+}
+
+.glyphicon-heart{
+    color: mediumvioletred;
+}

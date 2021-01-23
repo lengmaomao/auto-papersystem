@@ -1,0 +1,27 @@
+.article-title-bar{
+    height: 56px;
+    display: flex;
+    background: rgb(26,26,23);
+    width: 100%;
+    display: flex;
+}
+.article-title-input{
+    font-weight: bold;
+    color: rgb(136,136,136);
+    font-size: large;
+    background:rgb(44,40,39);
+    margin: 8px 16px 8px 8px;
+    height: 40px;
+    border-color: #cccccc;
+}
+.article-title-btn{
+    font-size: small;
+    color: white;
+    background: black;
+    margin: 8px 16px 8px 8px;
+    padding: 6px 20px 6px 20px;
+    width: 100px;
+    height: 40px;
+    border:solid 1px #cccccc;
+    border-radius: 4px;
+}

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xyz.lengmaomao.autopapersystem.mapper.UserMapper">
+
+    <resultMap id="user" type="xyz.lengmaomao.autopapersystem.beans.User">
+
+    </resultMap>
+<!--    增加用户-->
+    <insert id="addUser" keyProperty="userId" useGeneratedKeys="true">
+        INSERT INTO user
+        (user_name)
+        VALUES
+        (#{userName})
+    </insert>
+<!--    删除用户-->
+    <delete id="deleteUser">
+        DELETE FROM user
+        WHERE user_id = #{userId}
+    </delete>
+<!--    查询用户(基本信息)-->
+    <select id="findUser" resultType="xyz.lengmaomao.autopapersystem.beans.User">
+        SELECT * FROM user
+        WHERE user_id = #{userId}
+    </select>
+<!--    修改用户-->
+    <update id="updateUser">
+        UPDATE user
+        <set>
+            <if test="userName!='' and userName != null">
+                user_name = #{userName}
+            </if>
+            <if test="userPassword!='' and userPassword != null">
+                user_password = #{userPassword}
+            </if>
+        </set>
+        <where>
+            user_id = #{userId}
+        </where>
+    </update>
+<!--    查询用户(担任课程)-->
+    <select id="findUserCourse" resultType="xyz.lengmaomao.autopapersystem.beans.Course">
+        SELECT course_id,course_book,course_name,course_chapter FROM user
+        LEFT JOIN user_course
+        ON user.user_id = user_course.user_id
+        LEFT JOIN course
+        ON user_course.course_id = course.course_id
+        WHERE user.user_id = #{userId}
+    </select>
+<!--    删除用户-科目中间表-->
+    <delete id="deleteUserCourse">
+        DELETE FROM user_course
+        <where>
+            <if test="userId != 0">
+                AND user_id = #{userId}
+            </if>
+            <if test="courseId != 0">
+                AND course_id = #{courseId}
+            </if>
+        </where>
+    </delete>
+<!--    增加用户-科目中间表-->
+    <insert id="addUserCourse" useGeneratedKeys="true">
+        INSERT INTO user_course (user_id,course_id)
+        VALUES (#{userId},#{courseId})
+    </insert>
+</mapper>

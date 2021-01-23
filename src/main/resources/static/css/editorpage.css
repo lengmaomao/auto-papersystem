@@ -1,0 +1,10 @@
+.modal-body h4{
+    display: inline-block;
+    margin-right: 10px;
+}
+
+#add_tag{
+    width: 40%;
+    display: inline;
+    float: left;
+}

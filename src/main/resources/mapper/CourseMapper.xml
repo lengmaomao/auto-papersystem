@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xyz.lengmaomao.autopapersystem.mapper.CourseMapper">
+    <!--    插入科目-->
+    <insert id="addCourse" keyProperty="courseId" parameterType="xyz.lengmaomao.autopapersystem.beans.Course">
+        INSERT INTO course (course_name,course_book,course_chapter) VALUES (#{courseName},#{courseBook},#{courseChapter})
+    </insert>
+    <!--    删除科目-->
+    <delete id="deleteCourse" >
+        <if test="courseId != 0 or courseId !=null">
+            DELETE FROM course WHERE course_id = #{courseId}
+        </if>
+    </delete>
+    <!--    修改科目-->
+    <update id="alterCourse" keyProperty="courseId">
+        UPDATE course
+        <set>
+            <if test="courseName != '' and courseName != null">
+                course_name = #{courseName} ,
+            </if>
+            <if test="courseBook != '' and courseBook != null">
+                course_book = #{courseBook} ,
+            </if>
+            <if test="courseChapter != '' and courseChapter != null">
+                course_chapter = #{courseChapter} ,
+            </if>
+        </set>
+        WHERE course_id = #{courseId}
+    </update>
+    <!--    获取科目-->
+    <select id="getCourse" resultType="xyz.lengmaomao.autopapersystem.beans.Course">
+        SELECT * FROM course WHERE course_id = #{courseId}
+    </select>
+    <!--    模糊查询课程类别-->
+    <select id="findPaperByTemplate">
+        SELECT * FROM course
+        <where>
+            <if test="courseName != null">
+                AND course_name like "%"#{courseName}"%"
+            </if>
+            <if test="courseBook != null">
+                AND course_book like "%"#{courseBook}"%"
+            </if>
+            <if test="courseChapter != null">
+                AND course_chapter like "%"#{courseChapter}"%"
+            </if>
+        </where>
+    </select>
+    <!--    查询所有课程类别-->
+    <select id="getAllCourse" parameterType="xyz.lengmaomao.autopapersystem.beans.Course">
+        SELECT * FROM course
+    </select>
+</mapper>

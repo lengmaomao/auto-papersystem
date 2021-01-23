@@ -1,0 +1,71 @@
+.photo_context{
+    background: rgba(255,255,255,0.5);
+}
+.photo_date{
+    background: #EEE url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAIAAAAmkwkpAAAAHklEQVQImWNkYGBgYGD4//8/A5wF5SBYyAr+//8PAPOCFO0Q2zq7AAAAAElFTkSuQmCC) repeat;
+    text-shadow: 5px -5px black, 4px -4px white;
+    font-weight: bold;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    padding-top: 5px;
+    text-align: center;
+    font-size: large;
+    user-select: none;
+    font-weight: bold;
+    border-bottom: #0f0f0f;
+}
+
+
+.photo_context_img{
+    margin: 10px;
+    width: 400px;
+    height: 300px;
+    float: left;
+    display: block;
+    overflow: hidden;
+    position: relative;
+    border:black solid 1px;
+    transition: all 0.4s ease-in-out;
+}
+.photo_context_img img{
+    width: 400px;
+    height: 300px;
+    margin:auto;
+    bottom: 0;
+    left: 0;
+    transition: all 0.4s ease-in-out;
+}
+.photo_context_img:hover img{
+    position: absolute;
+    transform: scale(1.1);
+}
+
+/*test*/
+#imgPreview {
+    margin: 10px auto 0px auto;
+    text-align: center;
+    display:flex;
+}
+#prompt3 {
+    width: 100%;
+    height: 180px;
+    text-align: center;
+    position: relative;
+}
+#imgSpan {
+    position: absolute;
+    top: 60px;
+    left: 40px;
+    text-align: center;
+}
+.filepath {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+#img3 {
+    height: 300px;
+    width: 100%;
+    display: none;
+    align: center;
+}

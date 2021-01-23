@@ -1,0 +1,25 @@
+server:
+  port: 80
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/auto-papersystem?serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+    resources:
+      static-locations: classpath:/templates/,classpath:/static/
+    thymeleaf:
+      encoding: UTF-8
+      mode: HTML
+      servlet:
+        content-type: text/html
+      cache: false
+      suffix: .html
+mybatis:
+  configuration:
+     map-underscore-to-camel-case: true
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+     auto-mapping-behavior: full
+     type-aliases-package: xyz.lengmaomao.autopapersystem.beans
+     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+     mapper-locations: mapper/**Mapper.xml

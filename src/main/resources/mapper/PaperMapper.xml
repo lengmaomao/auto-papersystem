@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xyz.lengmaomao.autopapersystem.mapper.PaperMapper">
+
+    <resultMap id="paper" type="xyz.lengmaomao.autopapersystem.beans.Paper">
+        <association property="paperCourse" column="paper_course" javaType="xyz.lengmaomao.autopapersystem.beans.Course"/>
+    </resultMap>
+<!--    获取试卷-->
+    <select id="getPaper" resultMap="paper">
+        SELECT * FROM paper INNER JOIN course ON paper_course = course_id WHERE paper_id = #{paperId}
+    </select>
+<!--    删除试卷-->
+    <delete id="deletePaper">
+        <if test="paperId!=0">
+            DELETE FROM paper WHERE paper_id = #{paperId}
+        </if>
+    </delete>
+<!--    更新试卷-->
+    <update id="updatePaper">
+        UPDATE paper
+        <set>
+            <if test="paperName != '' and paperName != null">
+                paper_name = #{paperName} ,
+            </if>
+            <if test="paperScore != '' and paperScore != null">
+                paper_score = #{paperScore} ,
+            </if>
+            <if test="paperCourse != '' and paperCourse != null">
+                paper_course = #{paperCourse.courseId} ,
+            </if>
+            <if test="paperSchool != '' and paperSchool != null">
+                paper_school = #{paperSchool} ,
+            </if>
+            <if test="paperAuthor != '' and paperAuthor != null">
+                paper_author = #{paperAuthor} ,
+            </if>
+            <if test="paperCreateTime != null">
+                paper_create_time = #{paperCreateTime,jdbcType=DATE} ,
+            </if>
+            <if test="paperLimit == false">
+                paper_limit = #{paperLimit} ,
+            </if>
+        </set>
+        WHERE paper_id = #{paperId}
+    </update>
+<!--    插入试卷-->
+    <insert id="insertPaper" keyProperty="paperId" useGeneratedKeys="true">
+        INSERT INTO paper (paper_name,paper_score,paper_course,paper_school,paper_author,paper_create_time,paper_limit)
+        VALUES (#{paperName},#{paperScore},#{paperCourse.courseId},#{paperSchool},#{paperAuthor},#{paperCreateTime},#{paperLimit})
+    </insert>
+<!--    插入试卷-题目中间表-->
+    <insert id="insertStagPaper" useGeneratedKeys="true">
+        INSERT INTO paper_subject (paper_id,subject_id)
+        VALUES (#{paperId},#{subjectId})
+    </insert>
+<!--    删除试卷-题目中间表-->
+    <delete id="deleteStagPaper">
+        DELETE FROM paper_subject
+        <where>
+            <if test="paperId != 0">
+                AND paper_id = #{paperId}
+            </if>
+            <if test="subjectId != 0">
+                AND subject_id = #{subjectId}
+            </if>
+        </where>
+    </delete>
+<!--    查询试卷(使用模式匹配查询)-->
+    <select id="findPaperByTemplate" parameterType="xyz.lengmaomao.autopapersystem.beans.Paper" resultType="xyz.lengmaomao.autopapersystem.beans.Paper">
+        SELECT * FROM paper LEFT JOIN course ON paper_course = course_id
+        <where>
+            <if test="paperName != null">
+                AND paper_name like "%"#{paperName}"%"
+            </if>
+            <if test="paperCourse != null and paperCourse.name != null">
+                AND course_name like "%"#{paperCourse.courseName}"%"
+            </if>
+            <if test="paperAuthor != null">
+                AND paper_author like "%"#{paperAuthor}"%"
+            </if>
+            <if test="paperSchool != null">
+                AND paper_school like "%"#{paperSchool}"%"
+            </if>
+        </where>
+    </select>
+<!--    查询试卷(用于数据展示,不包含试题,不包含未公开试卷)-->
+    <select id="findAllPaper" resultType="xyz.lengmaomao.autopapersystem.beans.Paper">
+        SELECT * FROM paper WHERE paper_limit = true
+    </select>
+</mapper>
