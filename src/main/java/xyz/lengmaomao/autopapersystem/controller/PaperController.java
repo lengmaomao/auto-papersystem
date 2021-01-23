@@ -17,7 +17,7 @@ public class PaperController {
     @Resource
     PaperService paperService;
     /*
-    查询试卷请求
+    查询试卷请求(测试一下)
      */
     @RequestMapping("/{paperId}")
     @ResponseBody
