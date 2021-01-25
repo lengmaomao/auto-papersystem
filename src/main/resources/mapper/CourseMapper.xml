@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="xyz.lengmaomao.autopapersystem.mapper.CourseMapper">
+    <resultMap id="course" type="xyz.lengmaomao.autopapersystem.beans.Course"></resultMap>
     <!--    插入科目-->
     <insert id="addCourse" keyProperty="courseId" parameterType="xyz.lengmaomao.autopapersystem.beans.Course">
-        INSERT INTO course (course_name,course_book,course_chapter) VALUES (#{courseName},#{courseBook},#{courseChapter})
+        INSERT INTO course (course_name,course_book) VALUES (#{courseName},#{courseBook})
     </insert>
     <!--    删除科目-->
     <delete id="deleteCourse" >
@@ -20,9 +21,6 @@
             </if>
             <if test="courseBook != '' and courseBook != null">
                 course_book = #{courseBook} ,
-            </if>
-            <if test="courseChapter != '' and courseChapter != null">
-                course_chapter = #{courseChapter} ,
             </if>
         </set>
         WHERE course_id = #{courseId}
@@ -41,13 +39,10 @@
             <if test="courseBook != null">
                 AND course_book like "%"#{courseBook}"%"
             </if>
-            <if test="courseChapter != null">
-                AND course_chapter like "%"#{courseChapter}"%"
-            </if>
         </where>
     </select>
     <!--    查询所有课程类别-->
-    <select id="getAllCourse" parameterType="xyz.lengmaomao.autopapersystem.beans.Course">
+    <select id="getAllCourse" resultMap="course">
         SELECT * FROM course
     </select>
 </mapper>

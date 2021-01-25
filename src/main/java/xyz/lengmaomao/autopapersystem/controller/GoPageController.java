@@ -18,6 +18,9 @@ public class GoPageController {
     //前往题库总览页面
     @RequestMapping("/subjects")
     public String goToSubject(){
-        return "subject";
+        return "subject/subject";
     }
+    //测试页面
+    @RequestMapping("/test")
+    public String test(){return "test";}
 }

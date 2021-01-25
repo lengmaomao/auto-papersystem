@@ -12,7 +12,7 @@ public class WritenSubject extends Subject {
     private String subjectAnswerCollection;
 
     public WritenSubject() {
-        this.subjectType = SUBJECT_TYPE_WRITEN;
+        this.subjectType = SUBJECT_TYPE_WRITTEN;
     }
 
     public String getSubjectAnswerCollection() {

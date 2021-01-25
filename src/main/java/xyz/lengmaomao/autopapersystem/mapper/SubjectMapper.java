@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 
-@Component
 @Mapper
 public interface SubjectMapper {
     //获得题目

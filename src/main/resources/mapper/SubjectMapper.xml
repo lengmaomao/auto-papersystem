@@ -45,9 +45,9 @@
 <!--    添加题目-->
     <insert id="addSubject" keyProperty="subjectId" useGeneratedKeys="true">
         INSERT INTO subject
-        (subject_score,subject_difficulty,subject_type,subject_describe,subject_answer,subject_course,subject_knowledge)
+        (subject_score,subject_difficulty,subject_type,subject_describe,subject_answer,subject_course,subject_knowledge,subject_share)
         VALUES
-        (#{subjectScore},#{subjectDifficulty},#{subjectType},#{subjectDescribe},#{subjectAnswer},#{subjectCourse.courseId},#{subjectKnowledge.knowledgeId})
+        (#{subjectScore},#{subjectDifficulty},#{subjectType},#{subjectDescribe},#{subjectAnswer},#{subjectCourse.courseId},#{subjectKnowledge.knowledgeId},#{subjectShare})
     </insert>
 <!--    获取试卷的题目列表-->
     <select id="getSubjectByPaper" resultType="xyz.lengmaomao.autopapersystem.beans.Subject">

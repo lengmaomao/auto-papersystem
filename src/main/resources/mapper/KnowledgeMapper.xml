@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="xyz.lengmaomao.autopapersystem.mapper.KnowledgeMapper">
+    <resultMap id="knowledge" type="xyz.lengmaomao.autopapersystem.beans.Knowledge">
+        <association property="knowledgeCourse" javaType="xyz.lengmaomao.autopapersystem.beans.Course"></association>
+    </resultMap>
+<!--    按ID查询知识点-->
+    <select id="getKnowledge">
+        SELECT  * FROM knowledge,course WHERE knowledge_id = #{knowledgeId} AND knowledge.knowledge_course = course_id
+    </select>
+
+<!--    增加知识点-->
+    <insert id="addKnowledge" useGeneratedKeys="true" keyProperty="knowledgeId" parameterType="xyz.lengmaomao.autopapersystem.beans.Knowledge">
+        INSERT INTO knowledge (knowledge_context,knowledge_chapter,knowledge_course) VALUES (#{knowledgeContext},#{knowledgeChapter},#{knowledgeCourse.courseId})
+    </insert>
+
+<!--    修改知识点-->
+    <update id="updateKnowledge" useGeneratedKeys="true" keyProperty="knowledgeId" parameterType="xyz.lengmaomao.autopapersystem.beans.Knowledge">
+        UPDATE knowledge
+        <set>
+            <if test="knowledgeContext!=null">
+                knowledge_context = #{knowledgeContext},
+            </if>
+            <if test="knowledgeChapter!=null">
+                knowledge_chapter = #{knowledgeChapter},
+            </if>
+            <if test="knowledgeCourse != null and knowledgeCourse.courseId != 0">
+                knowledge_course = #{knowledgeCourse.courseId},
+            </if>
+        </set>
+        WHERE knowledge_id = knowledgeId
+    </update>
+
+<!--    删除知识点-->
+    <delete id="deleteKnowledge">
+        DELETE FROM knowledge WHERE knowledge_id = #{knowledgeId}
+    </delete>
+
+<!--    模糊查询知识点-->
+    <select id="findKnowledgeByTemplate" resultMap="knowledge">
+        SELECT * FROM knowledge,course
+        <where>
+            <if test="knowledgeContext != null">
+                AND knowledge_context like "%"#{knowledgeContext}"%"
+            </if>
+            <if test="knowledgeChapter != null">
+                AND knowledge_chapter like "%"#{knowledgeChapter}"%"
+            </if>
+            <if test="knowledgeCourse != null and knowledgeCourse.courseId != 0">
+                AND knowledge_course = #{knowledgeCourse.courseId}
+            </if>
+        </where>
+        AND course.course_id = knowledge.knowledge_course
+    </select>
+
+<!--    查询所有知识点-->
+    <select id="findAllKnowledge">
+        SELECT * FROM knowledge,course WHERE course.course_id = knowledge.knowledge_course
+    </select>
+</mapper>

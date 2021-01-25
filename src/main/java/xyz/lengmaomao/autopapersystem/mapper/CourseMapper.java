@@ -7,7 +7,6 @@ import xyz.lengmaomao.autopapersystem.beans.Course;
 import java.util.List;
 
 
-@Component
 @Mapper
 public interface CourseMapper {
     //获得课程(ID)

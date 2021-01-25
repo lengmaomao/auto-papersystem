@@ -65,12 +65,14 @@ public class SubjectController {
     "subjectScore":150,
     "subjectType":"多项选择题",
     "subjectDescribe":"这是一道前端传回json后台的选择题2,请选择()\n A.A B.B C.C D.D",
-    "subjectAnswer":"A"
+    "subjectAnswer":"A",
+    "subjectShare": true
 }
      */
     @RequestMapping("/add_subject")
     @ResponseBody
     public int addSubject(@RequestBody Subject subject){
+        System.out.println(subject);
         return subjectService.addSubject(subject);
     }
 }

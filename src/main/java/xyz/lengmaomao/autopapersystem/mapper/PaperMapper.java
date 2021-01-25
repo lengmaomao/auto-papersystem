@@ -7,7 +7,6 @@ import xyz.lengmaomao.autopapersystem.beans.Paper;
 import java.util.List;
 
 
-@Component
 @Mapper
 public interface PaperMapper {
     //添加试卷

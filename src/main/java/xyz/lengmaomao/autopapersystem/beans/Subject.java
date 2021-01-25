@@ -22,7 +22,7 @@ public class Subject {
     //判断题
     static final public String SUBJECT_TYPE_TRUE_OR_FALSE = "判断题";
     //简答题
-    static final public String SUBJECT_TYPE_WRITEN = "简答题";
+    static final public String SUBJECT_TYPE_WRITTEN = "简答题";
     //综合题
     static final public String SUBJECT_TYPE_COMPREHENSIVE = "综合题";
 
@@ -50,6 +50,9 @@ public class Subject {
 
     //答案字符串
     protected String subjectAnswer;
+
+    //分享
+    protected boolean subjectShare;
 
     @Override
     public boolean equals(Object o) {
@@ -82,6 +85,7 @@ public class Subject {
                 ", subjectType='" + subjectType + '\'' +
                 ", subjectDescribe='" + subjectDescribe + '\'' +
                 ", subjectAnswer='" + subjectAnswer + '\'' +
+                ", subjectShare=" + subjectShare +
                 '}';
     }
 }
