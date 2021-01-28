@@ -19,6 +19,9 @@
     <update id="updateSubject">
         UPDATE subject
         <set>
+            <if test="subjectName != '' and subjectName != null">
+                subject_name = #{subjectName} ,
+            </if>
             <if test="subjectScore != '' and subjectScore != null">
                 subject_score = #{subjectScore} ,
             </if>
@@ -32,22 +35,23 @@
                 subject_describe = #{subjectDescribe} ,
             </if>
             <if test="subjectAnswer != '' and subjectAnswer != null">
-                subject_answer = #{subjectAnswer}
+                subject_answer = #{subjectAnswer} ,
             </if>
             <if test="subjectCourse != '' and subjectCourse != null">
-                subject_course = #{subjectCourse.courseId}
+                subject_course = #{subjectCourse.courseId} ,
             </if>
             <if test="subjectKnowledge!=null">
-                subject_knowledge = #{subjectKnowledge.knowledgeId}
+                subject_knowledge = #{subjectKnowledge.knowledgeId} ,
             </if>
         </set>
+        WHERE subject_id = #{subjectId}
     </update>
 <!--    添加题目-->
     <insert id="addSubject" keyProperty="subjectId" useGeneratedKeys="true">
         INSERT INTO subject
-        (subject_score,subject_difficulty,subject_type,subject_describe,subject_answer,subject_course,subject_knowledge,subject_share)
+        (subject_score,subject_name,subject_difficulty,subject_type,subject_describe,subject_answer,subject_course,subject_knowledge,subject_share)
         VALUES
-        (#{subjectScore},#{subjectDifficulty},#{subjectType},#{subjectDescribe},#{subjectAnswer},#{subjectCourse.courseId},#{subjectKnowledge.knowledgeId},#{subjectShare})
+        (#{subjectScore},#{subjectName},#{subjectDifficulty},#{subjectType},#{subjectDescribe},#{subjectAnswer},#{subjectCourse.courseId},#{subjectKnowledge.knowledgeId},#{subjectShare})
     </insert>
 <!--    获取试卷的题目列表-->
     <select id="getSubjectByPaper" resultType="xyz.lengmaomao.autopapersystem.beans.Subject">
@@ -63,6 +67,9 @@
     <select id="getSubjectByTemplate" resultMap="subject">
         SELECT * FROM subject LEFT JOIN knowledge ON subject_knowledge = knowledge_id LEFT JOIN course ON subject_course = course_id
         <where>
+            <if test="subjectName != null">
+                AND subject_name LIKE #{subjectName}
+            </if>
             <if test="subjectType != null">
                 AND subject_type LIKE #{subjectType}
             </if>
@@ -81,7 +88,7 @@
         </where>
     </select>
 <!--    查询所有题目-->
-    <select id="getAllSubject">
-        SELECT * FROM subject
+    <select id="getAllSubject" resultMap="subject">
+        SELECT * FROM subject LEFT JOIN course ON subject_course = course_id LEFT JOIN knowledge ON subject_knowledge = knowledge_id WHERE subject_share = true
     </select>
 </mapper>

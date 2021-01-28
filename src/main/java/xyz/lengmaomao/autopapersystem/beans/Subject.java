@@ -30,6 +30,9 @@ public class Subject {
     //题目ID
     protected int subjectId;
 
+    //题名
+    protected String subjectName;
+
     //题目学科
     protected Course subjectCourse;
 
@@ -62,6 +65,8 @@ public class Subject {
         return subjectId == subject.subjectId &&
                 subjectScore == subject.subjectScore &&
                 subjectDifficulty == subject.subjectDifficulty &&
+                subjectShare == subject.subjectShare &&
+                Objects.equals(subjectName, subject.subjectName) &&
                 Objects.equals(subjectCourse, subject.subjectCourse) &&
                 Objects.equals(subjectKnowledge, subject.subjectKnowledge) &&
                 Objects.equals(subjectType, subject.subjectType) &&
@@ -71,13 +76,14 @@ public class Subject {
 
     @Override
     public int hashCode() {
-        return Objects.hash(subjectId, subjectCourse, subjectKnowledge, subjectScore, subjectDifficulty, subjectType, subjectDescribe, subjectAnswer);
+        return Objects.hash(subjectId, subjectName, subjectCourse, subjectKnowledge, subjectScore, subjectDifficulty, subjectType, subjectDescribe, subjectAnswer, subjectShare);
     }
 
     @Override
     public String toString() {
         return "Subject{" +
                 "subjectId=" + subjectId +
+                ", subjectName='" + subjectName + '\'' +
                 ", subjectCourse=" + subjectCourse +
                 ", subjectKnowledge=" + subjectKnowledge +
                 ", subjectScore=" + subjectScore +

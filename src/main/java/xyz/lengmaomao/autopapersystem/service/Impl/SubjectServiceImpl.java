@@ -47,6 +47,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public List<Subject> getAllSubject() {
-        return getAllSubject();
+        return subjectMapper.getAllSubject();
     }
+
 }

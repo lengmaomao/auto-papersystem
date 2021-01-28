@@ -1,0 +1,123 @@
+<table id="subject_table" class="layui-table" lay-filter="subject_table" lay-size="lg" lay-skin="nob" lay-even>
+</table>
+
+<div id="layer-joinPage" style="display: none">
+    <div class="layui-card">
+        <div class="layui-card-header" style="text-align: center">选择添加到的试卷</div>
+        <div class="layui-card-body">
+            <form class="layui-form " action="">
+                <div class="layui-form-item">
+<!--                    选择所属试卷-->
+                    <div class="layui-input-block">
+                        <select class="paper-select" name="paper" lay-verify="required">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+<!--                点击进行试题添加提交命令-->
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="addToPaper">确定</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    //刷新试卷列表
+    $.ajax({
+        type: "POST",
+        url: "/paper/find_all_paper",
+        success: function (data) {
+            for (let paper in data){
+                $(".paper-select").append("<option value="+data[paper].paperId+">"+data[paper].paperName+"</option>")
+            }
+        }
+    })
+    layui.use('table',function () {
+        const table = layui.table;
+        table.render({
+            page: true,
+            skin: 'nob',
+            even: true,
+            elem: '#subject_table',
+            url: 'subject/find_all_subject',
+            parseData: function(res){
+                console.log(res);
+                const data=[];
+                for (let item in res){
+                    data.push({"subjectId":res[item].subjectId,"subjectName":res[item].subjectName,"subjectCourse":res[item].subjectCourse.courseName,"subjectKnowledge":res[item].subjectKnowledge.knowledgeContext})
+                }
+                console.log(data);
+              return{
+                  "code": 0,
+                  "msg": "",
+                  "count": data.length,
+                  "data": data,
+              }
+            },
+            cols:[
+                [
+                {field: 'subjectId', title: 'ID', sort: true, type: 'numbers'}
+                ,{field: 'subjectName', title: '题名', templet: '#goPage'}
+                ,{field: 'subjectCourse', title: '科目名'}
+                ,{field: 'subjectKnowledge', title: '知识点'}
+                ,{fixed: 'right', align:'center', toolbar: '#toolBars'}
+                    ]
+            ]
+        });
+
+        //监听点击事件
+        table.on('tool(subject_table)',function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            const subject_data = obj.data; //获得当前行数据
+            const layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            const tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+            console.log(subject_data);
+            console.log(layEvent);
+            console.log(tr);
+
+            //弹出加入试卷页面
+            layui.use('layer', function(){
+                const layer = layui.layer;
+                const index_of_addToPaper = layer.open({
+                    type: 1,
+                    title: '将试题添加到试卷',
+                    area: ['600px','500px'],
+                    content: $("#layer-joinPage")
+                })
+                layui.use('form', function(){
+                    const form = layui.form;
+                    form.render();
+                    form.on("submit(addToPaper)",function (data) {
+                        const field = data.field;
+                        //封装数据
+                        let submit_data = {
+                            "paperId":field.paper,
+                            "subjectId":subject_data.subjectId
+                        };
+                        //数据提交:add_subject_to_paper
+                        $.ajax({
+                            url:'/subject/add_subject_to_paper',
+                            data: submit_data,
+                            type: 'POST',
+
+                        })
+                        //验证提交数据
+                        console.log(JSON.stringify(submit_data));
+                        layer.close(index_of_addToPaper);
+                        layer.msg("添加成功");
+                        return false;
+                    })
+                });
+
+            });
+        });
+    })
+</script>
+<script type="text/html" id="toolBars">
+    <a class="layui-btn layui-btn-xs  layui-btn-primary"  lay-event="addToPaper">加入试卷</a>
+</script>
+<script type="text/html" id="goPage">
+    <a href="/subject/{{d.subjectId}}"  target="_blank" class="layui-table-link ">{{d.subjectName}}</a>
+</script>

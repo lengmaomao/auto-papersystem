@@ -20,6 +20,12 @@ public class GoPageController {
     public String goToSubject(){
         return "subject/subject";
     }
+    @RequestMapping("/subjects/addSubjects/")
+    public String goToAddSubject(){return "subject/addSubject";}
+    @RequestMapping("/subjects/subjectList/")
+    public String goSubjectList(){return "subject/subjectList";}
+    @RequestMapping("/subjects/mySubject/")
+    public String mySubject(){return "subject/mySubject";}
     //测试页面
     @RequestMapping("/test")
     public String test(){return "test";}

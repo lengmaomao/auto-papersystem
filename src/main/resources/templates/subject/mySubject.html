@@ -1,0 +1,371 @@
+<table id="subject_table" class="layui-table" lay-filter="subject_table" lay-size="lg" lay-skin="nob" lay-even>
+</table>
+
+<div id="layer-alterSubject" style="">
+    <div class="layui-card">
+        <div class="layui-card-header" style="text-align: center">选择添加到的试卷</div>
+        <div class="layui-card-body">
+            <fieldset class="layui-elem-field">
+                <legend>试卷修改----信息总览</legend>
+                <form class="layui-form layui-field-box" id="finish_tabBody" lay-filter="alter_subject_form">
+                    <div class="layui-form-item layui-show">
+                        <label required class="layui-form-label">题目类型</label>
+                        <div class="layui-input-block">
+                            <select name="subjectType" lay-verify="required">
+                                <option value=""></option>
+                                <option value="单项选择题">单项选择题</option>
+                                <option value="多项选择题">多项选择题</option>
+                                <option value="填空题">填空题</option>
+                                <option value="判断题">判断题</option>
+                                <option value="简答题">简答题</option>
+                                <option value="综合题">综合题</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">题名</label>
+                        <div class="layui-input-block">
+                            <input type="subject_name" name="subjectName" required  placeholder="请输入试题名" lay-verify="required"  class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">分数</label>
+                        <div class="layui-input-inline">
+                            <input  name="grade" required lay-verify="required" placeholder="分数" autocomplete="off" class="layui-input" >
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" >是否公开</label>
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="share" lay-skin="switch" lay-text="公开|私有" value="true" >
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">难度选择</label>
+                        <div class="layui-input-block" >
+                            <input type="radio" name="DIFFICULTY" value="1" title="困难" >
+                            <input type="radio" name="DIFFICULTY" value="2" title="普通" >
+                            <input type="radio" name="DIFFICULTY" value="3" title="简单" >
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-show">
+                        <label required class="layui-form-label">所属科目</label>
+                        <div class="layui-input-block">
+                            <select class="course_select"  lay-filter="course_select" name="course" lay-verify="required" >
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-show">
+                        <label required class="layui-form-label">知识点</label>
+                        <div class="layui-input-block">
+                            <select class="knowledge_select" lay-filter="knowledge_select" name="knowledge" lay-verify="required" >
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">题目描述</label>
+                        <div class="layui-input-block">
+                            <textarea required name="desc" placeholder="" class="layui-textarea" ></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">答案</label>
+                        <div class="layui-input-block">
+                            <textarea required name="answer" placeholder="" class="layui-textarea" ></textarea>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-filter="subject_submit"  lay-submit>完成</button>
+                        </div>
+                    </div>
+                </form>
+            </fieldset>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use('table',function () {
+        const table = layui.table;
+        //表格初始化
+        table.render({
+                    page: true,
+                    skin: 'nob',
+                    even: true,
+                    elem: '#subject_table',
+                    //测试选择所有模块,登录模块完成后进行个人查询
+                    url: 'subject/find_all_subject',
+                    parseData: function(res){
+                        console.log(res);
+                        const data=[];
+                        for (let item in res){
+                            data.push({"subjectId":res[item].subjectId,"subjectName":res[item].subjectName,"subjectCourse":res[item].subjectCourse.courseName,"subjectKnowledge":res[item].subjectKnowledge.knowledgeContext})
+                        }
+                        console.log(data);
+                        return{
+                            "code": 0,
+                            "msg": "",
+                            "count": data.length,
+                            "data": data,
+                        }
+                    },
+                    cols:[
+                        [
+                            {field: 'subjectId', title: 'ID', sort: true, type: 'numbers'}
+                            ,{field: 'subjectName', title: '题名', templet: '#goPage'}
+                            ,{field: 'subjectCourse', title: '科目名'}
+                            ,{field: 'subjectKnowledge', title: '知识点'}
+                            ,{fixed: 'right', align:'center', toolbar: '#toolBars'}
+                        ]
+                    ]
+                });
+        //监听点击事件
+        table.on('tool(subject_table)',function(obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            const subject_data = obj.data; //获得当前行数据
+            const layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            const tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+            //监听事件为修改题目
+            if (layEvent == 'alterSubject'){
+                //获取点击行的ID,并进行ajax查询,保存数据
+                $.ajax({
+                    url: /subject/ + subject_data.subjectId,
+                    type: 'POST',
+                    success: function (data) {
+                        const form_data = {
+                            "subjectType" : data.subjectType,
+                            "subjectName" : data.subjectName,
+                            "grade" : data.subjectScore,
+                            "share" : data.subjectShare,
+                            "DIFFICULTY" : data.subjectDifficulty,
+                            "course" : data.subjectCourse.courseId,
+                            "knowledge" : data.subjectKnowledge.knowledgeId,
+                            "desc" : data.subjectDescribe,
+                            "answer" : data.subjectAnswer
+                        }
+                        //必须在初始化表单之前进行赋值!
+                        setCourse();
+                        setKnowledgeByCourse(form_data.course);
+                        // renderForm();
+                        layui.use(['form','layer'],function () {
+                            const form = layui.form;
+                            const layer = layui.layer;
+                            const layer_id=layer.open({
+                                type: 1,
+                                content: $("#layer-alterSubject"),
+                                area: "500px",
+                            })
+                            form.val('alter_subject_form',form_data);
+                            form.render('select','alter_subject_form');
+                        //进行提交
+                            form.on("submit(subject_submit)", function (data) {
+                                const field = data.field;
+                                //封装数据
+                                let share;
+                                if (field.share == "true")
+                                    share = true;
+                                else
+                                    share = false;
+                                let alter_data = {
+                                    "subjectId": subject_data.subjectId,
+                                    "subjectCourse": {
+                                        "courseId": field.course,
+                                    },
+                                    "subjectKnowledge": {
+                                        "knowledgeId": field.knowledge,
+                                    },
+                                    "subjectName": field.subjectName,
+                                    "subjectScore": field.subjectScore,
+                                    "subjectType": field.subjectType,
+                                    "subjectDescribe": field.desc,
+                                    "subjectAnswer": field.answer,
+                                    "subjectDifficulty": field.DIFFICULTY,
+                                    "subjectShare": share
+                                }
+                                //数据提交:add_subject_to_paper
+                                $.ajax({
+                                    url: '/subject/update_subject',
+                                    data: JSON.stringify(alter_data),
+                                    type: 'POST',
+                                    contentType: 'application/json'
+                                })
+                                //验证提交数据
+                                console.log(JSON.stringify(alter_data));
+                                layer.close(layer_id);
+                                layer.msg("修改成功");
+                                return false;
+                            })
+                        })
+                    }
+                })
+            }
+        })
+    })
+    // layui.use('table',function () {
+    //     const table = layui.table;
+    //     table.render({
+    //         page: true,
+    //         skin: 'nob',
+    //         even: true,
+    //         elem: '#subject_table',
+    //         //测试选择所有模块,登录模块完成后进行个人查询
+    //         url: 'subject/find_all_subject',
+    //         parseData: function(res){
+    //             console.log(res);
+    //             const data=[];
+    //             for (let item in res){
+    //                 data.push({"subjectId":res[item].subjectId,"subjectName":res[item].subjectName,"subjectCourse":res[item].subjectCourse.courseName,"subjectKnowledge":res[item].subjectKnowledge.knowledgeContext})
+    //             }
+    //             console.log(data);
+    //             return{
+    //                 "code": 0,
+    //                 "msg": "",
+    //                 "count": data.length,
+    //                 "data": data,
+    //             }
+    //         },
+    //         cols:[
+    //             [
+    //                 {field: 'subjectId', title: 'ID', sort: true, type: 'numbers'}
+    //                 ,{field: 'subjectName', title: '题名', templet: '#goPage'}
+    //                 ,{field: 'subjectCourse', title: '科目名'}
+    //                 ,{field: 'subjectKnowledge', title: '知识点'}
+    //                 ,{fixed: 'right', align:'center', toolbar: '#toolBars'}
+    //             ]
+    //         ]
+    //     });
+    //
+    //     //监听点击事件
+    //     table.on('tool(subject_table)',function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+    //         const subject_data = obj.data; //获得当前行数据
+    //         const layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+    //         const tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+    //
+    //         //题目详情获取
+    //         $.ajax({
+    //             url: /subject/ + subject_data.subjectId,
+    //             type: 'POST',
+    //             success: function (data) {
+    //                 const form_data = {
+    //                     "subjectType" : data.subjectType,
+    //                     "subjectName" : data.subjectName,
+    //                     "grade" : data.subjectScore,
+    //                     "share" : data.subjectShare,
+    //                     "DIFFICULTY" : data.subjectDifficulty,
+    //                     "course" : data.subjectCourse.courseId,
+    //                     "knowledge" : data.subjectKnowledge.knowledgeId,
+    //                     "desc" : data.subjectDescribe,
+    //                     "answer" : data.subjectAnswer
+    //                 }
+    //                 //为下拉选择框赋值
+    //                 setCourse();
+    //                 setKnowledgeByCourse(form_data.course);
+    //                 //修改面板
+    //                 if(layEvent == 'alterSubject'){
+    //                     //获取点击行的ID,并进行ajax查询,保存数据
+    //                     layui.use('form', function () {
+    //                         const form = layui.form;
+    //                         form.render;
+    //                         console.log("为表单赋值");
+    //                         form.val('alert_subject_form', form_data);
+    //                         // console.log("刷新渲染");
+    //                         // form.render();
+    //                         //进行提交
+    //                         form.on("submit(subject_submit)", function (data) {
+    //                             const field = data.field;
+    //                             //封装数据
+    //                             let share;
+    //                             if (field.share == "true")
+    //                                 share = true;
+    //                             else
+    //                                 share = false;
+    //                             let alter_data = {
+    //                                 "subjectCourse": {
+    //                                     "courseId": field.course,
+    //                                 },
+    //                                 "subjectKnowledge": {
+    //                                     "knowledgeId": field.knowledge,
+    //                                 },
+    //                                 "subjectName": field.subjectName,
+    //                                 "subjectScore": field.subjectScore,
+    //                                 "subjectType": field.subjectType,
+    //                                 "subjectDescribe": field.desc,
+    //                                 "subjectAnswer": field.answer,
+    //                                 "subjectDifficulty": field.DIFFICULTY,
+    //                                 "subjectShare": share
+    //                             }
+    //                             //数据提交:add_subject_to_paper
+    //                             $.ajax({
+    //                                 url: '/subject/update_subject',
+    //                                 data: alter_data,
+    //                                 type: 'POST',
+    //                             })
+    //                             //验证提交数据
+    //                             console.log(JSON.stringify(alter_data));
+    //                             layer.close(index_of_alterSubject);
+    //                             layer.msg("修改成功");
+    //                             return false;
+    //                         })
+    //                         form.render();
+    //                     });
+    //                 }
+    //             }
+    //         })
+    //
+    //     });
+    // })
+    //
+    //根据科目ID,获取所有科目的知识点
+    function setKnowledgeByCourse(courseId) {
+        console.log("执行了知识点加载");
+        let data={
+            "knowledgeCourse":{
+                "courseId": courseId
+            }
+        }
+        $.ajax({
+            type: "POST",
+            url: "/knowledge/find_knowledge",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (data) {
+                $(".knowledge_select").empty();
+                for (let knowledge in data) {
+                    $(".knowledge_select").append("<option value=" + data[knowledge].knowledgeId + ">" + data[knowledge].knowledgeContext + "</option>");
+                }
+                renderForm();
+            }
+        });
+    }
+    //填充科目
+    function setCourse() {
+        console.log("执行了科目加载");
+        //刷新科目
+        $.ajax({
+            type: "POST",
+            url: "/course/all_course",
+            success: function (data) {
+                $(".course_select").empty();
+                for (let course in data){
+                    $(".course_select").append("<option value="+data[course].courseId+">"+data[course].courseName+" "+data[course].courseBook+"</option>")
+                }
+                renderForm();
+            }
+        })
+    }
+    //重新渲染表单
+    function renderForm(){
+        layui.use('form', function(){
+            const form = layui.form;//高版本建议把括号去掉，有的低版本，需要加()
+            form.render();
+        });
+    }
+</script>
+
+<script type="text/html" id="toolBars">
+    <a class="layui-btn layui-btn-xs  layui-btn-primary"  lay-event="alterSubject">修改</a>
+    <a class="layui-btn layui-btn-xs  layui-btn-danger"  lay-event="deleteSubject">删除</a>
+</script>
+<script type="text/html" id="goPage">
+    <a href="/subject/{{d.subjectId}}"  target="_blank" class="layui-table-link ">{{d.subjectName}}</a>
+</script>

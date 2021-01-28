@@ -1,6 +1,7 @@
 package xyz.lengmaomao.autopapersystem.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,5 +23,12 @@ public class KnowledgeController {
     public List<Knowledge> findKnowledge(@RequestBody Knowledge knowledge){
         List<Knowledge> list = knowledgeService.findKnowledgeByTemplate(knowledge);
         return list;
+    }
+
+    //根据ID查找知识点
+    @ResponseBody
+    @RequestMapping("/{id}")
+    public Knowledge findKnowledgeById(@PathVariable("id") int knowledgeId){
+        return knowledgeService.getKnowledge(knowledgeId);
     }
 }

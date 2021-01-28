@@ -10,6 +10,7 @@ import xyz.lengmaomao.autopapersystem.beans.Subject;
 import xyz.lengmaomao.autopapersystem.service.SubjectService;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -24,7 +25,8 @@ public class SubjectController {
     @RequestMapping("/{subjectId}")
     @ResponseBody
     public Subject getSubject(@PathVariable("subjectId")int subjectId){
-        return subjectService.getSubject(subjectId);
+         Subject subject = subjectService.getSubject(subjectId);
+         return subject;
     }
     /*
         模糊查询
@@ -41,6 +43,7 @@ public class SubjectController {
     @RequestMapping("/find_all_subject")
     @ResponseBody
     public List<Subject> findAllSubject(){
+        System.out.println("调用接口");
         return subjectService.getAllSubject();
     }
     /*
@@ -69,10 +72,24 @@ public class SubjectController {
     "subjectShare": true
 }
      */
+//    添加试题
     @RequestMapping("/add_subject")
     @ResponseBody
     public int addSubject(@RequestBody Subject subject){
         System.out.println(subject);
         return subjectService.addSubject(subject);
+    }
+
+    //更新试题
+    @RequestMapping("/update_subject")
+    @ResponseBody
+    public void updateSubject(@RequestBody Subject subject){
+        System.out.println("获取到的subject:" + subject);
+        subjectService.updateSubject(subject);
+    }
+    @RequestMapping("add_subject_to_paper")
+    @ResponseBody
+    public void addSubjectToPaper(int subjectId, int paperId ){
+        System.out.println("subjectId:"+subjectId+" paperId:"+paperId);
     }
 }
