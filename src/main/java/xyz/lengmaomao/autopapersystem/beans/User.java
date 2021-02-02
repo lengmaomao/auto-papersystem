@@ -15,8 +15,8 @@ public class User {
     private int userId;
     private String userName;
     private String userPassword;
+    private String userRole;
     private List<Course> userCourse;
     private List<Paper> userPaper;
     private List<Subject> userSubject;
-     
 }

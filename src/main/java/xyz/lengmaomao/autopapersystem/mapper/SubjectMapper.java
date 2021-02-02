@@ -29,6 +29,8 @@ public interface SubjectMapper {
     List<Subject> getSubjectByTemplate(Subject subject);
     //题目全体查询
     List<Subject> getAllSubject();
+    //通过登录的用户查询试题
+    List<Subject> getSubjectsByUser(int userId);
 
 
 }

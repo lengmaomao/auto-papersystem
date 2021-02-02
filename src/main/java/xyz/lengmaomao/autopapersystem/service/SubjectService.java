@@ -21,4 +21,6 @@ public interface SubjectService {
     List<Subject> getSubjectByTemplate(Subject subject);
     //题目全体查询
     List<Subject> getAllSubject();
+    //获取登录用户下所有题目
+    List<Subject> getSubjectsByUser(int userId);
 }

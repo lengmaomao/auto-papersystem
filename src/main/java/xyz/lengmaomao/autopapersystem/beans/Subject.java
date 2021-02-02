@@ -54,6 +54,9 @@ public class Subject {
     //答案字符串
     protected String subjectAnswer;
 
+    //题目作者
+    protected int subjectAuthor;
+
     //分享
     protected boolean subjectShare;
 

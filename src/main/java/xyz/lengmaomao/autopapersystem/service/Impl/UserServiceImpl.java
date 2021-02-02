@@ -5,14 +5,18 @@ import xyz.lengmaomao.autopapersystem.beans.Course;
 import xyz.lengmaomao.autopapersystem.beans.Paper;
 import xyz.lengmaomao.autopapersystem.beans.Subject;
 import xyz.lengmaomao.autopapersystem.beans.User;
+import xyz.lengmaomao.autopapersystem.mapper.UserMapper;
 import xyz.lengmaomao.autopapersystem.service.UserService;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 
 @Service
 public class UserServiceImpl implements UserService {
 
+    @Resource
+    UserMapper userMapper;
     @Override
     public int addUser(User user) {
         return 0;
@@ -25,27 +29,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUser(int userId) {
-        return null;
+        return userMapper.findUser(userId);
     }
 
     @Override
     public int updateUser(User user) {
         return 0;
-    }
-
-    @Override
-    public List<Course> findUserCourse(int userId) {
-        return null;
-    }
-
-    @Override
-    public List<Paper> findUserPaper(int userId) {
-        return null;
-    }
-
-    @Override
-    public List<Subject> findUserSubject(int userId) {
-        return null;
     }
 
     @Override
@@ -55,6 +44,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findUserByTemplate(User user) {
-        return null;
+        return userMapper.findUserByTemplate(user);
     }
 }

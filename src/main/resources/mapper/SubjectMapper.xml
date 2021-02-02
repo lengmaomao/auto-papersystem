@@ -91,4 +91,8 @@
     <select id="getAllSubject" resultMap="subject">
         SELECT * FROM subject LEFT JOIN course ON subject_course = course_id LEFT JOIN knowledge ON subject_knowledge = knowledge_id WHERE subject_share = true
     </select>
+    <!--    通过用户获取所有题目-->
+    <select id="getSubjectsByUser" resultMap="subject">
+        SELECT * FROM subject LEFT JOIN course ON subject_course = course_id LEFT JOIN knowledge ON subject_knowledge = knowledge_id WHERE subject_author = #{subjectAuthor}
+    </select>
 </mapper>

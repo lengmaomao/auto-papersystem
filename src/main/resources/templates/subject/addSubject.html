@@ -1,0 +1,343 @@
+<div class=" layui-tab" lay-filter="addSubject" >
+    <ul class="layui-tab-title" disabled>
+        <li class="layui-this" lay-id="base_tabHead">1.题目基本信息</li>
+        <li lay-id="course_tabHead">2.题目所属科目</li>
+        <li lay-id="knowledge_tabHead">3.题目知识点</li>
+        <li lay-id="finish_tabHead">4.完成</li>
+    </ul>
+    <div class="layui-tab-content">
+        <!--            题目基本信息-->
+        <div class="layui-tab-item layui-show">
+            <fieldset class="layui-elem-field">
+                <legend>试卷添加----基本信息</legend>
+                <form class="layui-form layui-field-box" action="" id="base_tabBody" lay-filter="base_tabBody">
+                    <div class="layui-form-item layui-show">
+                        <label required class="layui-form-label">题目类型</label>
+                        <div class="layui-input-block">
+                            <select name="subjectType" lay-verify="required">
+                                <option value=""></option>
+                                <option value="单项选择题">单项选择题</option>
+                                <option value="多项选择题">多项选择题</option>
+                                <option value="填空题">填空题</option>
+                                <option value="判断题">判断题</option>
+                                <option value="简答题">简答题</option>
+                                <option value="综合题">综合题</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">题名</label>
+                        <div class="layui-input-block">
+                            <input  name="subjectName" required  placeholder="请输入试题名" lay-verify="required"  class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">分数</label>
+                        <div class="layui-input-inline">
+                            <input  name="grade" required lay-verify="required" placeholder="分数" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">难度选择</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="DIFFICULTY" value="1" title="困难">
+                            <input type="radio" name="DIFFICULTY" value="2" title="普通" checked>
+                            <input type="radio" name="DIFFICULTY" value="3" title="简单" >
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">题目描述</label>
+                        <div class="layui-input-block">
+                            <textarea required name="desc" placeholder="请输入题目描述" class="layui-textarea"></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">答案</label>
+                        <div class="layui-input-block">
+                            <textarea required name="answer" placeholder="请输入内容(如果是选择题,请使用空格将选项隔开)" class="layui-textarea"></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn"  lay-submit lay-filter="to_2">下一步</button>
+                        </div>
+                    </div>
+                </form>
+            </fieldset>
+        </div>
+
+        <!--            题目所属科目-->
+        <div class="layui-tab-item">
+            <fieldset class="layui-elem-field">
+                <legend>试卷添加----选择科目</legend>
+                <form class="layui-form layui-field-box" id="course_tabBody" lay-filter="course_tabBody">
+                    <div class="layui-form-item layui-show">
+                        <label required class="layui-form-label" >所属科目</label>
+                        <div class="layui-input-block">
+                            <select class="course_select" name="course" lay-verify="required" lay-filter="course_select" lay-search >
+                                <option value="">输入科目</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn  layui-btn-primary"  lay-submit lay-filter="to_1">上一步</button>
+                            <button class="layui-btn"  lay-submit lay-filter="to_3">下一步</button>
+                        </div>
+                    </div>
+                </form>
+            </fieldset>
+        </div>
+        <!--            题目所属知识点-->
+        <div class="layui-tab-item">
+            <fieldset class="layui-elem-field">
+                <legend>试卷添加----选择知识点</legend>
+                <form class="layui-form layui-field-box" id="knowledge_tabBody" lay-filter="knowledge_tabBody">
+                    <div class="layui-form-item layui-show">
+                        <label required class="layui-form-label">知识点</label>
+                        <div class="layui-input-block">
+                            <select class="knowledge_select" lay-filter="knowledge_select" name="course" lay-verify="required" lay-search>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn  layui-btn-primary"  lay-submit lay-filter="to_2">上一步</button>
+                            <button class="layui-btn"  lay-submit lay-filter="to_4">下一步</button>
+                        </div>
+                    </div>
+                </form>
+            </fieldset>
+        </div>
+        <!--            完成面板-->
+        <div class="layui-tab-item" lay-filter="finish-tab">
+            <fieldset class="layui-elem-field">
+                <legend>试卷添加----信息总览</legend>
+                <form class="layui-form layui-field-box" id="finish_tabBody" lay-filter="finish_tabBody">
+                    <div class="layui-form-item layui-show">
+                        <label required class="layui-form-label">题目类型</label>
+                        <div class="layui-input-block">
+                            <select name="subjectType" lay-verify="required" disabled>
+                                <option value=""></option>
+                                <option value="单项选择题">单项选择题</option>
+                                <option value="多项选择题">多项选择题</option>
+                                <option value="填空题">填空题</option>
+                                <option value="判断题">判断题</option>
+                                <option value="简答题">简答题</option>
+                                <option value="综合题">综合题</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">题名</label>
+                        <div class="layui-input-block">
+                            <input type="subject_name" name="subjectName" required  placeholder="请输入试题名" lay-verify="required"  class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">分数</label>
+                        <div class="layui-input-inline">
+                            <input  name="grade" required lay-verify="required" placeholder="分数" autocomplete="off" class="layui-input" disabled>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" >是否公开</label>
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="share" lay-skin="switch" lay-text="公开|私有" value="true" >
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">难度选择</label>
+                        <div class="layui-input-block" >
+                            <input type="radio" name="DIFFICULTY" value="1" title="困难" disabled>
+                            <input type="radio" name="DIFFICULTY" value="2" title="普通" disabled>
+                            <input type="radio" name="DIFFICULTY" value="3" title="简单" disabled>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-show">
+                        <label required class="layui-form-label">所属科目</label>
+                        <div class="layui-input-block">
+                            <select class="course_select"  lay-filter="course_select" name="course" lay-verify="required" disabled>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-show">
+                        <label required class="layui-form-label">知识点</label>
+                        <div class="layui-input-block">
+                            <select class="knowledge_select" lay-filter="knowledge_select" name="knowledge" lay-verify="required" disabled>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">题目描述</label>
+                        <div class="layui-input-block">
+                            <textarea required name="desc" placeholder="" class="layui-textarea" disabled></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">答案</label>
+                        <div class="layui-input-block">
+                            <textarea required name="answer" placeholder="" class="layui-textarea" disabled></textarea>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn  layui-btn-primary"  lay-submit lay-filter="to_3">上一步</button>
+                            <button class="layui-btn" lay-filter="subject_submit"  lay-submit>完成</button>
+                        </div>
+                    </div>
+                </form>
+                </form>
+            </fieldset>
+        </div>
+    </div>
+</div>
+
+<script>
+    //刷新科目信息
+    $.ajax({
+        type: "GET",
+        url: "/course/all_course",
+        success: function (data) {
+            for (let course in data){
+                $(".course_select").append("<option value="+data[course].courseId+">"+data[course].courseName+" "+data[course].courseBook+"</option>")
+            }
+            renderForm();
+        }
+    })
+    layui.use('form', function(){
+        const form = layui.form;
+        // 标签页
+        const element = layui.element;
+        element.on('tab(addSubject)', function(data){
+            console.log(data);
+            if (data.index == 3){
+                const data1 = form.val("base_tabBody");
+                const data2 = form.val("course_tabBody");
+                const data3 = form.val("knowledge_tabBody");
+                form.val("finish_tabBody",data1);
+                form.val("finish_tabBody",data2);
+                form.val("finish_tabBody",data3);
+                setCourse(data2.courseId);
+                renderForm();
+            }
+        });
+        //监听提交
+        form.on('submit(subject_submit)', function(form_data){
+            console.log(form_data);
+            let field = form_data.field;
+            console.log(field);
+            let share;
+            if (field.share == "true")
+                share = true;
+            else
+                share = false;
+            let data = {
+                "subjectCourse":{
+                    "courseId":field.course,
+                },
+                "subjectKnowledge":{
+                    "knowledgeId":field.knowledge,
+                },
+                "subjectName":field.subjectName,
+                "subjectScore":field.grade,
+                "subjectType":field.subjectType,
+                "subjectDescribe":field.desc,
+                "subjectAnswer":field.answer,
+                "subjectDifficulty":field.DIFFICULTY,
+                "subjectShare": share
+            }
+            $.ajax({
+                type: "POST",
+                url:"/subject/add_subject",
+                contentType: "application/json",
+                data:(JSON.stringify(data)),
+            })
+            console.log(JSON.stringify(data))
+            layer.msg(JSON.stringify(data));
+            return false;
+        });
+
+        //监听科目选择后进行知识点更新查询
+        form.on('select(course_select)',function (field_data) {
+            let courseId = field_data.value;
+            let data={
+                "knowledgeCourse":{
+                    "courseId": courseId
+                }
+            }
+            $.ajax({
+                type: "POST",
+                url: "/knowledge/find_knowledge",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success:function (data) {
+                    $(".knowledge_select").empty();
+                    for (let knowledge in data){
+                        $(".knowledge_select").append("<option value="+data[knowledge].knowledgeId+">"+data[knowledge].knowledgeContext+"</option>");
+                    }
+                }
+            })
+        })
+        //监听知识点选择
+        form.on('select(knowledge_select)',function (field_data) {
+            let knowledgeId = field_data.value;
+            $(".knowledge_select").val(knowledgeId);
+            renderForm();
+        })
+        //监听to_num
+        form.on('submit(to_1)',function () {
+            element.tabChange('addSubject', 'base_tabHead');
+            renderForm();
+            return false;
+        })
+        form.on('submit(to_2)',function () {
+
+            element.tabChange('addSubject', 'course_tabHead');
+            renderForm();
+            return false;
+        })
+        form.on('submit(to_3)',function () {
+            element.tabChange('addSubject', 'knowledge_tabHead');
+            renderForm();
+            return false;
+        })
+        form.on('submit(to_4)',function () {
+            element.tabChange('addSubject', 'finish_tabHead');
+            const data1 = form.val("base_tabBody");
+            const data2 = form.val("course_tabBody");
+            const data3 = form.val("knowledge_tabBody");
+            form.val("finish_tabBody",data1);
+            form.val("finish_tabBody",data2);
+            form.val("finish_tabBody",data3);
+            setCourse(data2.course);
+            return false;
+        })
+    });
+    //填充科目
+    function setCourse(courseId) {
+        console.log("执行了科目加载");
+        //刷新科目
+        $.ajax({
+            type: "GET",
+            url: "/course/all_course",
+            success: function (data) {
+                $(".course_select").empty();
+                for (let course in data){
+                    $(".course_select").append("<option value="+data[course].courseId+">"+data[course].courseName+" "+data[course].courseBook+"</option>")
+                }
+                $(".course_select").val(courseId);
+                renderForm();
+            }
+        })
+    }
+    //更新渲染
+    function renderForm(){
+        layui.use('form', function(){
+            console.log("更新渲染");
+            const form = layui.form;//高版本建议把括号去掉，有的低版本，需要加()
+            form.render();
+        });
+    }
+    </script>

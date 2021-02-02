@@ -50,4 +50,9 @@ public class SubjectServiceImpl implements SubjectService {
         return subjectMapper.getAllSubject();
     }
 
+    @Override
+    public List<Subject> getSubjectsByUser(int userId) {
+        return subjectMapper.getSubjectsByUser(userId);
+    }
+
 }

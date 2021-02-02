@@ -176,37 +176,37 @@
         const table = layui.table;
         //表格初始化
         table.render({
-                    page: true,
-                    skin: 'nob',
-                    even: true,
-                    elem: '#subject_table',
-                    //测试选择所有模块,登录模块完成后进行个人查询
-                    url: 'subject/find_all_subject',
-                    parseData: function(res){
-                        console.log(res);
-                        const data=[];
-                        for (let item in res){
-                            data.push({"subjectId":res[item].subjectId,"subjectName":res[item].subjectName,"subjectCourse":res[item].subjectCourse.courseName,"subjectKnowledge":res[item].subjectKnowledge.knowledgeContext,"subjectScore":res[item].subjectScore})
-                        }
-                        console.log(data);
-                        return{
-                            "code": 0,
-                            "msg": "",
-                            "count": data.length,
-                            "data": data,
-                        }
-                    },
-                    cols:[
-                        [
-                            {field: 'subjectId', title: 'ID', sort: true}
-                            ,{field: 'subjectName', title: '题名', templet: '#goPage'}
-                            ,{field: 'subjectCourse', title: '科目名'}
-                            ,{field: 'subjectKnowledge', title: '知识点'}
-                            ,{field: 'subjectScore', title: '分值'}
-                            ,{fixed: 'right', align:'center', toolbar: '#toolBars'}
-                        ]
-                    ]
-                });
+            page: true,
+            skin: 'nob',
+            even: true,
+            elem: '#subject_table',
+            //测试选择所有模块,登录模块完成后进行个人查询
+            url: 'subject/user',
+            parseData: function(res){
+                console.log(res);
+                const data=[];
+                for (let item in res){
+                    data.push({"subjectId":res[item].subjectId,"subjectName":res[item].subjectName,"subjectCourse":res[item].subjectCourse.courseName,"subjectKnowledge":res[item].subjectKnowledge.knowledgeContext,"subjectScore":res[item].subjectScore})
+                }
+                console.log(data);
+                return{
+                    "code": 0,
+                    "msg": "",
+                    "count": data.length,
+                    "data": data,
+                }
+            },
+            cols:[
+                [
+                    {field: 'subjectId', title: 'ID', sort: true}
+                    ,{field: 'subjectName', title: '题名', templet: '#goPage'}
+                    ,{field: 'subjectCourse', title: '科目名'}
+                    ,{field: 'subjectKnowledge', title: '知识点'}
+                    ,{field: 'subjectScore', title: '分值'}
+                    ,{fixed: 'right', align:'center', toolbar: '#toolBars'}
+                ]
+            ]
+        });
         //监听点击事件
         table.on('tool(subject_table)',function(obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
             const subject_data = obj.data; //获得当前行数据
@@ -247,7 +247,7 @@
                                     area: "500px",
                                 })
                             })
-                        //进行提交
+                            //进行提交
                             form.on("submit(subject_submit)", function (data) {
                                 const field = data.field;
                                 //封装数据
@@ -275,7 +275,7 @@
                                 //使用layer.confirm进行提交确认
                                 layer.confirm('确认修改?',
                                     {
-                                    btn: ['确定','取消'],
+                                        btn: ['确定','取消'],
                                     },
                                     //确认
                                     function f1(index) {
@@ -298,7 +298,7 @@
                                         layer.close(index);
                                         return false;
                                     }
-                                    );
+                                );
                                 return false;
                             })
                         })
@@ -310,23 +310,23 @@
                 layui.use('layer',function () {
                     const layer = layui.layer;
                     layer.confirm('确定删除吗?',{
-                        btn: ['确定','取消']
-                    },
-                    function function1(index) {
-                        $.ajax({
-                            url: "/subject/delete_subject/"+subject_data.subjectId,
-                            type: 'POST',
-                            success:function (data) {
-                                layer.close(index);
-                                layer.msg('删除成功');
-                                table.reload('subject_table');
-                            }
-                        })
-                    },
-                    function function2(index) {
-                        layer.close(index);
-                        return false;
-                    },
+                            btn: ['确定','取消']
+                        },
+                        function function1(index) {
+                            $.ajax({
+                                url: "/subject/delete_subject/"+subject_data.subjectId,
+                                type: 'POST',
+                                success:function (data) {
+                                    layer.close(index);
+                                    layer.msg('删除成功');
+                                    table.reload('subject_table');
+                                }
+                            })
+                        },
+                        function function2(index) {
+                            layer.close(index);
+                            return false;
+                        },
                     )
                 })
                 return false;
@@ -461,5 +461,5 @@
     <a class="layui-btn layui-btn-xs  layui-btn-danger"  lay-event="deleteSubject">删除</a>
 </script>
 <script type="text/html" id="goPage">
-    <a href="javascript:void (0)" onclick="subjectShow({{d.subjectId}}) " class="layui-table-link ">{{d.subjectName}}</a>
+    <a href="javascript:void (0)" onclick="subjectShow({{d.subjectId}} ) " class="layui-table-link ">{{d.subjectName}}</a>
 </script>

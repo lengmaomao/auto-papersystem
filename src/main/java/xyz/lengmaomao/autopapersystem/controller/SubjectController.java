@@ -10,6 +10,7 @@ import xyz.lengmaomao.autopapersystem.beans.Subject;
 import xyz.lengmaomao.autopapersystem.service.SubjectService;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 
@@ -88,9 +89,19 @@ public class SubjectController {
         System.out.println("获取到的subject:" + subject);
         subjectService.updateSubject(subject);
     }
+
+    //将题目添加到试卷
     @RequestMapping("add_subject_to_paper")
     @ResponseBody
     public void addSubjectToPaper(int subjectId, int paperId ){
         System.out.println("subjectId:"+subjectId+" paperId:"+paperId);
+    }
+
+    //查询某个用户所有的试题
+    @RequestMapping("/user")
+    @ResponseBody
+    public List<Subject> findSubjectsByUser(HttpServletRequest httpServletRequest){
+        int userId = Integer.valueOf(httpServletRequest.getUserPrincipal().getName());
+        return subjectService.getSubjectsByUser(userId);
     }
 }
