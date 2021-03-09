@@ -31,12 +31,18 @@ public class GoPageController {
         System.out.println("WELCOME! "+httpServletRequest.getUserPrincipal().getName());
         return "subject/subject";
     }
+    //添加试题页面
     @RequestMapping("/subjects/addSubjects/")
     public String goToAddSubject(){return "subject/addSubject";}
+    //总览试卷页面
     @RequestMapping("/subjects/subjectList/")
     public String goSubjectList(){return "subject/subjectList";}
+    //我的试题页面
     @RequestMapping("/subjects/mySubject/")
     public String mySubject(){return "subject/mySubject";}
+    //添加试卷页面
+    @RequestMapping("/papers/addPaper/")
+    public String addPaper(){return "paper/addPaper";}
     //测试页面
     @RequestMapping("/test")
     public String test(){return "test";}

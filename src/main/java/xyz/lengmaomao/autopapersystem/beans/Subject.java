@@ -30,6 +30,9 @@ public class Subject {
     //题目ID
     protected int subjectId;
 
+    //题目在试卷中的ID
+    protected int subjectPaperId;
+
     //题名
     protected String subjectName;
 
@@ -84,17 +87,18 @@ public class Subject {
 
     @Override
     public String toString() {
-        return "Subject{" +
-                "subjectId=" + subjectId +
-                ", subjectName='" + subjectName + '\'' +
-                ", subjectCourse=" + subjectCourse +
-                ", subjectKnowledge=" + subjectKnowledge +
-                ", subjectScore=" + subjectScore +
-                ", subjectDifficulty=" + subjectDifficulty +
-                ", subjectType='" + subjectType + '\'' +
-                ", subjectDescribe='" + subjectDescribe + '\'' +
-                ", subjectAnswer='" + subjectAnswer + '\'' +
-                ", subjectShare=" + subjectShare +
-                '}';
+        return
+//                "Subject{" +
+                "subjectId=" + subjectId ;
+//                ", subjectName='" + subjectName + '\'' +
+//                ", subjectCourse=" + subjectCourse +
+//                ", subjectKnowledge=" + subjectKnowledge +
+//                ", subjectScore=" + subjectScore +
+//                ", subjectDifficulty=" + subjectDifficulty +
+//                ", subjectType='" + subjectType + '\'' +
+//                ", subjectDescribe='" + subjectDescribe + '\'' +
+//                ", subjectAnswer='" + subjectAnswer + '\'' +
+//                ", subjectShare=" + subjectShare +
+//                '}';
     }
 }

@@ -5,10 +5,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import xyz.lengmaomao.autopapersystem.VO.PaperCreateVO;
+import xyz.lengmaomao.autopapersystem.beans.Course;
 import xyz.lengmaomao.autopapersystem.beans.Paper;
 import xyz.lengmaomao.autopapersystem.service.PaperService;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -66,8 +70,23 @@ public class PaperController {
     * */
     @RequestMapping("/add_paper")
     @ResponseBody
-    public int addPaper(@RequestBody Paper paper){
+    public int addPaper(@RequestBody PaperCreateVO paperVO, HttpServletRequest httpServletRequest){
+        System.out.println("paperVO.subjects:"+paperVO.toString());
+        Paper paper;
+        paperVO.setAuthor(Integer.valueOf(httpServletRequest.getUserPrincipal().getName())); //获取作者
+        paper = paperVO.transfer();
         return paperService.addPaper(paper);
+    }
+    @RequestMapping("/auto_paper")
+    @ResponseBody
+    public Paper addAutoPaper(@RequestBody PaperCreateVO rule, HttpServletRequest httpServletRequest){
+        rule.setAuthor(Integer.valueOf(httpServletRequest.getUserPrincipal().getName()));
+        Paper paper = paperService.autoPaper(rule);
+        paper.setPaperAuthor(Integer.valueOf(httpServletRequest.getUserPrincipal().getName()));
+        paper.setPaperCreateTime(new Date());
+        System.out.println(paper);
+//        paperService.addPaper(paper);
+        return paper;
     }
     /*
     删除试卷

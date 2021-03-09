@@ -17,4 +17,6 @@ public interface CourseService {
     List<Course> findPaperByTemplate(Course course);
     //查询所有课程类别
     List<Course> findAllCourse();
+    //查询某个用户所有的课程
+    List<Course> getUserCourse(int userId);
 }

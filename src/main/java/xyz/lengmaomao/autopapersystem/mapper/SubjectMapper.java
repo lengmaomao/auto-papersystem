@@ -31,6 +31,10 @@ public interface SubjectMapper {
     List<Subject> getAllSubject();
     //通过登录的用户查询试题
     List<Subject> getSubjectsByUser(int userId);
+    //通过试题类型查询实体列表
+    List<Subject> getSubjectByType(@Param("type") String type,@Param("size") int size,@Param("user") int user);
+    //按照实体类型单个查询
+    Subject getSingleSubjectByType(@Param("type") String type,@Param("user") int user);
 
 
 }

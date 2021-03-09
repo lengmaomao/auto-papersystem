@@ -1,0 +1,484 @@
+<div class=" layui-tab" lay-filter="addPaper" >
+<!--    layui选项卡标题-->
+    <ul class="layui-tab-title" disabled>
+        <li class="layui-this" lay-id="base_tabHead">1.试卷基本信息</li>
+        <li lay-id="type_tabHead">2.选择生成方式&题型</li>
+        <li lay-id="knowledge_tabHead">3.知识点添加</li>
+        <li lay-id="finish_tabHead">4.完成</li>
+    </ul>
+<!--    layui选项卡内容-->
+    <div class="layui-tab-content">
+<!--        试卷基本信息-->
+        <div class="layui-tab-item layui-show" >
+            <fieldset class="layui-elem-field">
+                <legend>试卷添加----基本信息</legend>
+                <form class="layui-form layui-field-box">
+<!--                    试卷名称-->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">试卷名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="paperName"  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input"/>
+                        </div>
+                    </div>
+<!--                    选择科目-->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">科目</label>
+                        <div class="layui-input-block">
+                            <select class="course_select" name="course" lay-verify="request">
+                            </select>
+                        </div>
+                    </div>
+<!--                    是否公开-->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" >是否公开</label>
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="share" lay-skin="switch" lay-text="公开|私有" value="true" >
+                        </div>
+                    </div>
+<!--                    试卷难度-->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">难度</label>
+                        <div class="layui-input-block">
+                            <input name="difficult" type="radio" value="1" title="简单"/>
+                            <input name="difficult" type="radio" value="2" title="中等"/>
+                            <input name="difficult" type="radio" value="3" title="困难"/>
+                        </div>
+                    </div>
+<!--                    按钮组-->
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn"  lay-submit lay-filter="1_to_2">下一步</button>
+                        </div>
+                    </div>
+                </form>
+            </fieldset>
+        </div>
+<!--        试卷生成方式-->
+        <div class="layui-tab-item">
+            <fieldset class="layui-elem-field">
+                <legend>试卷添加----生成方式&题型</legend>
+                <form class="layui-form layui-field-box">
+<!--                    生成方式-->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">生成方式</label>
+                        <div class="layui-input-block">
+                            <select name="builder" lay-filter="add_type">
+                                <option value="auto">自动生成</option>
+                                <option value="no-auto">手动添加</option>
+                            </select>
+                        </div>
+                    </div>
+<!--                    选择题型-->
+                    <div class="layui-block">
+                        <div class="layui-form-item layui-inline">
+                            <label class="layui-form-label">单选题</label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="single_select" lay-skin="switch" class="subject-switch">
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-inline">
+                            <div class="layui-input-block">
+                                <input type="text" name="single_num"   placeholder="单选题数量" autocomplete="off" class="layui-input subject-num"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-block">
+                        <div class="layui-form-item layui-inline">
+                            <label class="layui-form-label">多选题</label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="multiple_select" lay-skin="switch" class="subject-switch">
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-inline">
+                            <div class="layui-input-block">
+                                <input type="text" name="multiple_num"   placeholder="多选题数量" autocomplete="off" class="layui-input subject-num"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-block">
+                        <div class="layui-form-item layui-inline">
+                            <label class="layui-form-label">填空题</label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="completion_subject" lay-skin="switch" class="subject-switch">
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-inline">
+                            <div class="layui-input-block">
+                                <input type="text" name="completion_num"   placeholder="填空题数量" autocomplete="off" class="layui-input subject-num"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-block">
+                        <div class="layui-form-item layui-inline">
+                            <label class="layui-form-label">判断题</label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="true_false_subject" lay-skin="switch" class="subject-switch">
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-inline">
+                            <div class="layui-input-block">
+                                <input type="text" name="true_false_num"   placeholder="判断题数量" autocomplete="off" class="layui-input subject-num"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-block">
+                        <div class="layui-form-item layui-inline">
+                            <label class="layui-form-label">简答题</label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="written_subject" lay-skin="switch" class="subject-switch">
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-inline">
+                            <div class="layui-input-block">
+                                <input type="text" name="written_num"   placeholder="简答题数量" autocomplete="off" class="layui-input subject-num"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-block">
+                        <div class="layui-form-item layui-inline">
+                            <label class="layui-form-label">综合题</label>
+                            <div class="layui-input-block">
+                                <input type="checkbox" name="comprehensive_subject" lay-skin="switch" class="subject-switch">
+                            </div>
+                        </div>
+                        <div class="layui-form-item layui-inline">
+                            <div class="layui-input-block">
+                                <input type="text" name="comprehensive_num"   placeholder="综合题数量" autocomplete="off" class="layui-input subject-num"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn  layui-btn-primary"  lay-submit lay-filter="2_to_1">上一步</button>
+                            <button class="layui-btn"  lay-submit lay-filter="2_to_3">下一步</button>
+                        </div>
+                    </div>
+                </form>
+            </fieldset>
+
+        </div>
+<!--        知识点添加-->
+        <div class="layui-tab-item">
+            <fieldset class="layui-elem-field">
+                <legend>试卷添加----选择知识点</legend>
+                <div id="addKnowledge"></div>
+                <br/>
+                <div class="layui-input-block">
+                    <button class="layui-btn  layui-btn-primary"  lay-submit lay-filter="3_to_2">上一步</button>
+                    <button class="layui-btn"  lay-submit lay-filter="3_to_4">下一步</button>
+                </div>
+                <br/>
+            </fieldset>
+        </div>
+<!--        完成-->
+        <div class="layui-tab-item">
+            <fieldset class="layui-elem-field">
+                <legend>试卷添加----完成总览</legend>
+                <br/>
+                <ul class="layui-timeline">
+                    <li class="layui-timeline-item">
+                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                        <div class="layui-timeline-content layui-text">
+                            <h3 class="layui-timeline-title">试卷名称</h3>
+                            <p id="field_paperName">
+                            </p>
+                        </div>
+                    </li>
+                    <li class="layui-timeline-item">
+                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                        <div class="layui-timeline-content layui-text">
+                            <h3 class="layui-timeline-title">试卷科目</h3>
+                            <p id="field_paperCourse"></p>
+                        </div>
+                    </li>
+                    <li class="layui-timeline-item">
+                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                        <div class="layui-timeline-content layui-text">
+                            <h3 class="layui-timeline-title">试卷考点</h3>
+                            <p>
+                                <ul id="field_paperPoints">
+                                </ul>
+                            </p>
+                        </div>
+                    </li>
+                    <li class="layui-timeline-item">
+                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                        <div class="layui-timeline-content layui-text">
+                            <h3 class="layui-timeline-title">权限</h3>
+                            <p id="field_limit">
+
+                            </p>
+                        </div>
+                    </li>
+                    <li class="layui-timeline-item">
+                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                        <div class="layui-timeline-content layui-text">
+                            <h3 class="layui-timeline-title">组卷方式</h3>
+                            <p id="field_type">
+
+                            </p>
+                        </div>
+                    </li>
+                    <li class="layui-timeline-item">
+                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                        <div class="layui-timeline-content layui-text">
+                            <h3 class="layui-timeline-title">题目配置</h3>
+                            <p>
+                                <ul id="field_subjects">
+                                    <li>单选题:5题</li>
+                                    <li>填空题:6题</li>
+                                    <li>xx题:7题</li>
+                                </ul>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+                <div class="layui-input-block">
+                    <button class="layui-btn  layui-btn-primary"  lay-submit lay-filter="4_to_3">上一步</button>
+                    <button class="layui-btn"  lay-submit lay-filter="submit_paper">完成</button>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+
+<script>
+    const formData = {
+        subjects: {}
+    };
+    //添加course
+    getCourse();
+    //加载tab切换标签
+    layui.use('element',function () {
+        const element = layui.element;
+        //加载form组件
+        layui.use('form',function () {
+            const form = layui.form;
+            //监听to_num
+            form.on('submit(1_to_2)',function (data) {
+                element.tabChange('addPaper', 'type_tabHead');
+                const field = data.field;
+                console.log('data');
+                console.log(data);
+                formData.courseId = parseInt(field.course);
+                formData.paperName = field.paperName;
+                formData.difficult = field.difficult;
+                if(field.share)
+                    formData.share = field.share;
+                else
+                    formData.share = false;
+                console.log('formData:');
+                console.log(formData);
+                renderForm();
+                return false;
+            })
+            form.on('submit(2_to_1)',function (data) {
+                element.tabChange('addPaper', 'base_tabHead');
+                renderForm();
+                return false;
+            })
+            form.on('submit(2_to_3)',function (data) {
+                element.tabChange('addPaper', 'knowledge_tabHead');
+                const field = data.field;
+                if(field.single_select)
+                    formData.subjects.single_select = field.single_num;
+                else
+                    delete field.single_num;
+                if(field.multiple_select)
+                    formData.subjects.multiple_select = field.multiple_num;
+                else
+                    delete field.multiple_num;
+                if(field.completion_subject)
+                    formData.subjects.completion_subject = field.completion_num;
+                else
+                    delete field.completion_num;
+                if (field.true_false_subject)
+                    formData.subjects.true_false_subject = field.true_false_num;
+                else
+                    delete field.true_false_num;
+                if (field.written_subject)
+                    formData.subjects.written_subject = field.written_num;
+                else
+                    delete field.written_num;
+                if (field.comprehensive_subject)
+                    formData.subjects.comprehensive_subject = field.comprehensive_num;
+                else
+                    delete field.comprehensive_num;
+                formData.builder = field.builder
+                console.log(formData);
+                renderForm();
+                return false;
+            })
+            form.on('submit(3_to_2)',function () {
+                element.tabChange('addPaper', 'type_tabHead');
+                renderForm();
+                return false;
+            })
+
+            form.on('submit(3_to_4)',function () {
+                element.tabChange('addPaper', 'finish_tabHead');
+                const transfer = layui.transfer;
+                const transferData = transfer.getData('knowledgeAdd');
+                formData.knowledge = transferData;
+                console.log(formData);
+                fieldChange(formData);
+                renderForm();
+                return false;
+            })
+            form.on('submit(4_to_3)',function () {
+                element.tabChange('addPaper', 'knowledge_tabHead');
+                renderForm();
+                return false;
+            })
+            //选择手动添加禁用所有题目自定义
+            form.on('select(add_type)',function (data) {
+                if (data.value == 'auto'){
+                    $()
+                    $('.subject-switch').removeAttr('disabled');
+                    $('.subject-num').removeAttr('disabled');
+                }else{
+                    $('.subject-switch').removeAttr('checked').attr("disabled", "disabled");
+                    $('.subject-num').attr("disabled", "disabled");
+                }
+                renderForm();
+            })
+            //提交试卷添加
+            form.on('submit(submit_paper)',function (data) {
+                createPaper(formData);
+            })
+        })
+
+    })
+
+    //加载transfer组件
+    layui.use('transfer',function () {
+        const transfer = layui.transfer;
+        const knowledgeData = getKnowledge(1);
+        const transferData = [];
+        for (let index in knowledgeData){
+            transferData.push(knowledgeData[index]);
+        }
+        transfer.render({
+            elem: '#addKnowledge',
+            title: ['科目知识点','选择的知识点'],
+            data:transferData,
+            parseData:function(res){
+                console.log(res);
+                return {
+                    "value": res.knowledgeId,
+                    "title": res.knowledgeContext,
+                    "disabled": ''  ,
+                    "checked": ''
+                }
+            },
+            id: 'knowledgeAdd',
+        })
+        transfer.reload('knowledgeAdd',{
+            data: transferData
+        })
+
+    })
+    //知识点请求
+    function getKnowledge(courseId){
+        console.log("查询知识点");
+        const postData = {
+            'knowledgeCourse':{
+                'courseId': courseId
+            },
+        };
+        $.ajax({
+            url: '/knowledge/find_knowledge',
+            data: JSON.stringify(postData),
+            type: 'POST',
+            contentType: 'application/json',
+            success:function (data) {
+                console.log('ajax回调返回的data');
+                console.log(data);
+                layui.transfer.reload('knowledgeAdd',{
+                    data: data
+                })
+            }
+        })
+    }
+    //科目请求
+    function getCourse() {
+        $.ajax({
+            type: "GET",
+            url: "/course/user_courses",
+            success: function (data) {
+                $(".course_select").empty();
+                for (let course in data){
+                    $(".course_select").append("<option value="+data[course].courseId+">"+data[course].courseName+" "+data[course].courseBook+"</option>")
+                }
+                renderForm();
+            }
+        })
+    }
+    //更新渲染
+    function renderForm(){
+        layui.use('form', function(){
+            console.log("更新渲染");
+            const form = layui.form;//高版本建议把括号去掉，有的低版本，需要加()
+            form.render();
+        });
+    }
+    //创建试卷
+    function createPaper(formData){
+        if (formData.builder != 'auto'){
+            $.ajax({
+                url: '/paper/add_paper',
+                data: JSON.stringify(formData),
+                type: 'POST',
+                contentType: 'application/json',
+                success: function () {
+                    alert('添加成功');
+                }
+            })
+        }else{
+            $.ajax({
+                url: '/paper/auto_paper',
+                data: JSON.stringify(formData),
+                type: 'POST',
+                contentType: 'application/json',
+                success: function (data) {
+                    console.log(data);
+                }
+            })
+        }
+
+    }
+    //修改总览
+    function fieldChange(formData) {
+        $("#field_paperPoints").html("");
+        $("#field_paperName").text(formData.paperName);
+        $("#field_paperCourse").text($(".course_select").text());
+        for (let index in formData.knowledge)
+        $("#field_paperPoints").append("<li>"+formData.knowledge[index].title+"</li>");
+        if (formData.share == true)
+            $("#field_limit").text("公开");
+        else
+            $("#field_limit").text("私有");
+        if (formData.builder == 'auto'){
+            $("#field_type").text("自动构建");
+            $("#field_subjects").html('');
+            if (formData.subjects.single_select != null)
+            $("#field_subjects").append("<li>"+"单选题:"+formData.subjects.single_select+"</li>");
+            if (formData.subjects.multiple_select != null)
+            $("#field_subjects").append("<li>"+"多选题:"+formData.subjects.multiple_select+"</li>");
+            if (formData.subjects.completion_subject != null)
+            $("#field_subjects").append("<li>"+"填空题:"+formData.subjects.completion_subject+"</li>");
+            if (formData.subjects.true_false_subject != null)
+            $("#field_subjects").append("<li>"+"判断题:"+formData.subjects.true_false_subject+"</li>");
+            if (formData.subjects.written_subject != null)
+            $("#field_subjects").append("<li>"+"简答题:"+formData.subjects.written_subject+"</li>");
+            if (formData.subjects.comprehensive_subject != null)
+            $("#field_subjects").append("<li>"+"综合题:"+formData.subjects.comprehensive_subject+"</li>");
+        }else
+            $("#field_type").text("手动组卷");
+
+
+    }
+
+</script>
+

@@ -11,6 +11,7 @@ import xyz.lengmaomao.autopapersystem.mapper.CourseMapper;
 import xyz.lengmaomao.autopapersystem.service.CourseService;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -64,5 +65,13 @@ public class CourseController {
     @ResponseBody
     public void deletePaper(@PathVariable("id")int id){
         courseService.deleteCourse(id);
+    }
+
+    //查询一个用户的所有科目
+    @RequestMapping("/user_courses")
+    @ResponseBody
+    public List<Course> userCourses(HttpServletRequest httpServletRequest){
+        int userId = Integer.valueOf(httpServletRequest.getUserPrincipal().getName());
+        return courseService.getUserCourse(userId);
     }
 }

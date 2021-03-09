@@ -32,7 +32,7 @@ public class SecurityConfigNew extends WebSecurityConfigurerAdapter {
         http.formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/user/login")
-                .defaultSuccessUrl("/subjects")
+                .defaultSuccessUrl("/index")
             .and().authorizeRequests()
                 .antMatchers("/subject/**").permitAll()
                 .antMatchers("/login").permitAll()

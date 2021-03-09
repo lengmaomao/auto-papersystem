@@ -1,6 +1,7 @@
 package xyz.lengmaomao.autopapersystem.service;
 
 
+import org.apache.ibatis.annotations.Param;
 import xyz.lengmaomao.autopapersystem.beans.Subject;
 
 import java.util.List;
@@ -23,4 +24,10 @@ public interface SubjectService {
     List<Subject> getAllSubject();
     //获取登录用户下所有题目
     List<Subject> getSubjectsByUser(int userId);
+    //按照类型获取试题列表
+    List<Subject> getSubjectByType(String type,int size,int user);
+    //按照实体类型单个查询
+    Subject getSingleSubjectByType(String type,int user);
+    //hello
+    void say();
 }

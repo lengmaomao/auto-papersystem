@@ -45,4 +45,8 @@
     <select id="getAllCourse" resultMap="course">
         SELECT * FROM course
     </select>
+<!--    查询某个教师担任的所有课程-->
+    <select id="getUserCourse" resultMap="course">
+        SELECT * FROM user_course,course WHERE user_course.course_id = course.course_id AND user_course.user_id = #{userId}
+    </select>
 </mapper>

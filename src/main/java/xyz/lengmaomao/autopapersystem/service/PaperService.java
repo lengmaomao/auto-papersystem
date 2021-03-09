@@ -1,5 +1,6 @@
 package xyz.lengmaomao.autopapersystem.service;
 
+import xyz.lengmaomao.autopapersystem.VO.PaperCreateVO;
 import xyz.lengmaomao.autopapersystem.beans.Paper;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface PaperService {
     List<Paper> findPaperByTemplate(Paper paper);
     //查询试卷(用于数据展示,不包含试题)
     List<Paper> findAllPaper();
+    //自动生成试卷
+    Paper autoPaper(PaperCreateVO rule);
 }

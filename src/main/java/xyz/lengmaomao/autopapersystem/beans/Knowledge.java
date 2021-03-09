@@ -8,4 +8,15 @@ public class Knowledge {
     private String knowledgeContext;
     private String knowledgeChapter;
     private Course knowledgeCourse;
+
+    @Override
+    public String toString() {
+        return
+//                "Knowledge{" + '\n'+
+                "knowledgeId=" + knowledgeId + '\n';
+//                ", knowledgeContext='" + knowledgeContext + '\'' + '\n'+
+//                ", knowledgeChapter='" + knowledgeChapter + '\'' + '\n'+
+//                ", knowledgeCourse=" + knowledgeCourse + '\n'+
+//                '}' + '\n';
+    }
 }

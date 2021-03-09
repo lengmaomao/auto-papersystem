@@ -21,4 +21,6 @@ public interface CourseMapper {
     List<Course> getCourseByTemplate(Course course);
     //查询所有课程类别
     List<Course> getAllCourse();
+    //查询某个用户所有的课程
+    List<Course> getUserCourse(int userId);
 }

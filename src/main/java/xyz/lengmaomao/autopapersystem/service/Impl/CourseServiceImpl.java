@@ -42,4 +42,9 @@ public class CourseServiceImpl implements CourseService {
     public List<Course> findAllCourse() {
         return courseMapper.getAllCourse();
     }
+
+    @Override
+    public List<Course> getUserCourse(int userId) {
+        return courseMapper.getUserCourse(userId);
+    }
 }

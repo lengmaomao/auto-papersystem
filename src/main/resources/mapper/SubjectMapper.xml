@@ -95,4 +95,24 @@
     <select id="getSubjectsByUser" resultMap="subject">
         SELECT * FROM subject LEFT JOIN course ON subject_course = course_id LEFT JOIN knowledge ON subject_knowledge = knowledge_id WHERE subject_author = #{subjectAuthor}
     </select>
+<!--    获取对应实体类型列表-->
+    <select id="getSubjectByType" resultMap="subject">
+        SELECT * FROM `subject` s, knowledge k, user_course uc
+        WHERE s.subject_course = uc.course_id
+        AND k.knowledge_course = uc.course_id
+        AND uc.user_id = #{user}
+        AND s.subject_type = #{type}
+        ORDER BY RAND()
+        LIMIT #{size}
+    </select>
+<!--    按照实体类型单个查询-->
+    <select id="getSingleSubjectByType" resultMap="subject">
+        SELECT * FROM `subject` s, knowledge k, user_course uc
+        WHERE s.subject_course = uc.course_id
+        AND k.knowledge_course = uc.course_id
+        AND uc.user_id = #{user}
+        AND s.subject_type = #{type}
+        ORDER BY RAND()
+        LIMIT 1
+    </select>
 </mapper>

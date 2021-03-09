@@ -55,4 +55,20 @@ public class SubjectServiceImpl implements SubjectService {
         return subjectMapper.getSubjectsByUser(userId);
     }
 
+    @Override
+    public List<Subject> getSubjectByType(String type, int size,int user) {
+        return subjectMapper.getSubjectByType(type,size,user);
+    }
+
+    @Override
+    public Subject getSingleSubjectByType(String type,int user) {
+        return subjectMapper.getSingleSubjectByType(type,user);
+    }
+
+
+    @Override
+    public void say() {
+        System.out.println("hello");
+    }
+
 }

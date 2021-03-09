@@ -1,7 +1,10 @@
 package xyz.lengmaomao.autopapersystem.service.Impl;
 
 import org.springframework.stereotype.Service;
+import xyz.lengmaomao.autopapersystem.VO.PaperCreateVO;
+import xyz.lengmaomao.autopapersystem.beans.GA;
 import xyz.lengmaomao.autopapersystem.beans.Paper;
+import xyz.lengmaomao.autopapersystem.beans.Population;
 import xyz.lengmaomao.autopapersystem.beans.Subject;
 import xyz.lengmaomao.autopapersystem.mapper.PaperMapper;
 import xyz.lengmaomao.autopapersystem.service.PaperService;
@@ -18,7 +21,7 @@ public class PaperServiceImpl implements PaperService {
     @Override
     public int addPaper(Paper paper) {
         paperMapper.insertPaper(paper);
-        System.out.println(paper.toString());
+//        System.out.println("paperServiceImpl:"+paper.toString());
         if (paper.getTotalSubjects()!=null){
             for (Subject subject:paper.getTotalSubjects()){
                 paperMapper.insertStagPaper(paper.getPaperId(),subject.getSubjectId());
@@ -76,5 +79,29 @@ public class PaperServiceImpl implements PaperService {
     @Override
     public List<Paper> findAllPaper() {
         return paperMapper.findAllPaper();
+    }
+
+    @Override
+    public Paper autoPaper(PaperCreateVO rule) {
+        Paper resultPaper;
+        // 迭代计数器
+        int count = 0;
+        int runCount = 300;
+        // 适应度期望值
+        double expand = 0.99;
+        //初始化种群
+        System.out.println("PaperService-rule:"+rule);
+        Population population = new Population(20, true, rule);
+        Paper paper = population.getFitness();
+        while (count < runCount && population.getFitness().getAdaptationDegree() < expand) {
+            count++;
+            System.out.println("开始第"+count+"轮进化");
+            population = GA.evolvePopulation(population, rule);
+
+            System.out.println("第 " + count + " 次进化，适应度为： " + population.getFitness().getAdaptationDegree() +" 难度系数:"+paper.getDifficulty() + " 知识点覆盖率:" + paper.getKPCoverage());
+            System.out.println("第"+count+"次进化,最佳适应度个体:" + population.getFitness().toString());
+        }
+        resultPaper = population.getFitness();
+        return resultPaper;
     }
 }
