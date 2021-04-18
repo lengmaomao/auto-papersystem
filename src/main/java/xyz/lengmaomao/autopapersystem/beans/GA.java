@@ -1,8 +1,7 @@
 package xyz.lengmaomao.autopapersystem.beans;
 
-import com.sun.glass.ui.Size;
 import org.springframework.stereotype.Component;
-import xyz.lengmaomao.autopapersystem.VO.PaperCreateVO;
+import xyz.lengmaomao.autopapersystem.VO.PaperCreateRule;
 import xyz.lengmaomao.autopapersystem.service.SubjectService;
 
 import javax.annotation.PostConstruct;
@@ -11,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+//@Scope("prototype")
 public class GA {
     /**
      * 变异概率
@@ -41,11 +41,12 @@ public class GA {
     /**
      * 种群进化
      */
-    public static Population evolvePopulation(Population pop,PaperCreateVO rule){
+    public static Population evolvePopulation(Population pop, PaperCreateRule rule){
         Population population = new Population();
         int elitismOffset;
         // 精英主义
         if (ELITISM) {
+            //防止刷掉最优解
             elitismOffset = 1;
             // 保留上一代最优秀个体
             Paper fitness = pop.getFitness();
@@ -65,10 +66,10 @@ public class GA {
 //            System.out.println("p2:"+p2.getPaperId());
             //交叉
             Paper child = crossover(p1,p2);
-            child.getPaperScore();
+            child.makePaperScore();
             child.setKpCoverage(rule);
-            child.setAdaptationDegree(rule,Paper.KP_WEIGHT,Paper.DIFFCULTY_WEIGHt);
-            child.getDifficulty();
+            child.makeAdaptationDegree(rule,Paper.KP_WEIGHT,Paper.DIFFICULTY_WEIGHT);
+            child.makeDifficulty();
             child.setPaperAuthor(rule.getAuthor());
             population.getPapers().add(child);
         }
@@ -79,7 +80,7 @@ public class GA {
             System.out.println("paperTempAuthor:"+paperTemp.getPaperAuthor());
             mutate(paperTemp);
             //计算知识点覆盖率
-            paperTemp.setAdaptationDegree(rule,Paper.KP_WEIGHT,Paper.DIFFCULTY_WEIGHt);
+            paperTemp.makeAdaptationDegree(rule,Paper.KP_WEIGHT,Paper.DIFFICULTY_WEIGHT);
             paperTemp.setKpCoverage(rule);
         }
         return population;
@@ -127,6 +128,7 @@ public class GA {
             if (Math.random() < MUTATION_RATE) {
                 //进行突变
                 subjectTemp =paper.getTotalSubjects().get(i);
+                System.out.println(subjectTemp);
                 //从题库里选择一个额外的题目
                 subjectMutate = ga.subjectService.getSingleSubjectByType(subjectTemp.getSubjectType(),paper.getPaperAuthor());
                 //当不为同一个题目时,则进行插入

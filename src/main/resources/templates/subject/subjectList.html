@@ -25,10 +25,12 @@
     </div>
 </div>
 <script>
+    let subjectSize = 0;
+    getSubjectCount();
     //刷新试卷列表
     $.ajax({
-        type: "POST",
-        url: "/paper/find_all_paper",
+        type: "GET",
+        url: "/paper/user",
         success: function (data) {
             for (let paper in data){
                 $(".paper-select").append("<option value="+data[paper].paperId+">"+data[paper].paperName+"</option>")
@@ -38,22 +40,32 @@
     layui.use('table',function () {
         const table = layui.table;
         table.render({
-            page: true,
+            page: {
+                // layout: [ 'prev', 'page', 'next', 'count','limit', 'refresh', 'skip'],
+                layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip'],//自定义分页布局
+                limits:[30,40,50],
+                limit: 30,
+                count: subjectSize,
+            },
             skin: 'nob',
             even: true,
             elem: '#subject_table',
             url: 'subject/find_all_subject',
+            request: {
+                pageName: 'pageNumber', //页码的参数名称，默认：page
+                limitName: 'nums' //每页数据量的参数名，默认：limit
+            },
             parseData: function(res){
                 console.log(res);
                 const data=[];
                 for (let item in res){
-                    data.push({"subjectId":res[item].subjectId,"subjectName":res[item].subjectName,"subjectCourse":res[item].subjectCourse.courseName,"subjectKnowledge":res[item].subjectKnowledge.knowledgeContext})
+                    data.push({"subjectId":res[item].subjectId,"subjectName":res[item].subjectName,"subjectCourse":res[item].subjectCourse.courseName,"subjectType":res[item].subjectType,"subjectDifficulty":res[item].subjectDifficulty,"subjectKnowledge":res[item].subjectKnowledge.knowledgeContext})
                 }
                 console.log(data);
               return{
                   "code": 0,
                   "msg": "",
-                  "count": data.length,
+                  "count": subjectSize,
                   "data": data,
               }
             },
@@ -62,10 +74,12 @@
                 {field: 'subjectId', title: 'ID', sort: true, type: 'numbers'}
                 ,{field: 'subjectName', title: '题名', templet: '#goPage'}
                 ,{field: 'subjectCourse', title: '科目名'}
+                ,{field: 'subjectType', title: '题型'}
                 ,{field: 'subjectKnowledge', title: '知识点'}
+                ,{field: 'subjectDifficulty', title: '试题难度', templet: '#subjectDifficulty'}
                 ,{fixed: 'right', align:'center', toolbar: '#toolBars'}
                     ]
-            ]
+            ],
         });
 
         //监听点击事件
@@ -114,10 +128,31 @@
             });
         });
     })
+    function getSubjectCount() {
+        $.ajax({
+            url: '/subject/getPublicSubjectCount',
+            async: false,
+            success: function (data) {
+                subjectSize = data;
+            }
+        })
+        return subjectSize;
+    }
 </script>
 <script type="text/html" id="toolBars">
     <a class="layui-btn layui-btn-xs  layui-btn-primary"  lay-event="addToPaper">加入试卷</a>
 </script>
 <script type="text/html" id="goPage">
     <a href="/subject/{{d.subjectId}}"  target="_blank" class="layui-table-link ">{{d.subjectName}}</a>
+</script>
+<script type="text/html" id="subjectDifficulty">
+    {{#  if(d.subjectDifficulty === 1){ }}
+    <span>简单</span>
+    {{#  }; }}
+    {{#  if(d.subjectDifficulty === 2){ }}
+    <span>中等</span>
+    {{#  }; }}
+    {{#  if(d.subjectDifficulty === 3){ }}
+    <span>困难</span>
+    {{#  }; }}
 </script>

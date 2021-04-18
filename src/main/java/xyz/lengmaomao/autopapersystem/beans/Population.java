@@ -1,9 +1,9 @@
 package xyz.lengmaomao.autopapersystem.beans;
 
 import lombok.Data;
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import xyz.lengmaomao.autopapersystem.VO.PaperCreateVO;
+import xyz.lengmaomao.autopapersystem.VO.PaperCreateRule;
 import xyz.lengmaomao.autopapersystem.service.SubjectService;
 
 import javax.annotation.PostConstruct;
@@ -12,6 +12,7 @@ import java.util.*;
 
 @Data
 @Component
+@Scope("singleton")
 public class Population {
 
     @Resource
@@ -37,8 +38,12 @@ public class Population {
      * @param initFlag       是否为初始化种群
      * @param rule           组卷规则
      */
-    public Population(int populationSize, boolean initFlag, PaperCreateVO rule){
+    public Population(int populationSize, boolean initFlag, PaperCreateRule rule){
+        if (papers != null){
+            papers.clear();
+        }
         if (initFlag){
+            //种群添加populationSize个个体
             for (int n=0;n<populationSize;n++){
                 Paper paper = new Paper();
                 //试卷题目
@@ -72,12 +77,12 @@ public class Population {
                     //设置试卷
                     paper.setTotalSubjects(new ArrayList<>(set));
                     paper.setPaperAuthor(rule.getAuthor());
-                    paper.getPaperKnowledge();
-                    paper.getPaperScore();
+                    paper.makePaperKnowledge();
+                    paper.makePaperScore();
                     //计算试卷知识点覆盖率
                     paper.setKpCoverage(rule);
                     //计算试卷适应度
-                    paper.setAdaptationDegree(rule,Paper.KP_WEIGHT,Paper.DIFFCULTY_WEIGHt);
+                    paper.makeAdaptationDegree(rule,Paper.KP_WEIGHT,Paper.DIFFICULTY_WEIGHT);
                     papers.add(paper);
             }
         }

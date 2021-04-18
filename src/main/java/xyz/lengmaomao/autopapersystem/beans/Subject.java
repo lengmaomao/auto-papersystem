@@ -28,40 +28,40 @@ public class Subject {
 
 
     //题目ID
-    protected int subjectId;
+    private int subjectId;
 
     //题目在试卷中的ID
-    protected int subjectPaperId;
+    private int subjectPaperId;
 
     //题名
-    protected String subjectName;
+    private String subjectName;
 
     //题目学科
-    protected Course subjectCourse;
+    private Course subjectCourse;
 
     //题目知识点
-    protected Knowledge subjectKnowledge;
+    private Knowledge subjectKnowledge;
 
     //题目分数
-    protected int subjectScore;
+    private int subjectScore;
 
     //题目难易度
-    protected int subjectDifficulty;
+    private int subjectDifficulty;
 
     //题目种类
-    protected String subjectType;
+    private String subjectType;
 
     //题目描述
-    protected String subjectDescribe;
+    private String subjectDescribe;
 
     //答案字符串
-    protected String subjectAnswer;
+    private String subjectAnswer;
 
     //题目作者
-    protected int subjectAuthor;
+    private int subjectAuthor;
 
     //分享
-    protected boolean subjectShare;
+    private boolean subjectShare;
 
     @Override
     public boolean equals(Object o) {
@@ -89,13 +89,13 @@ public class Subject {
     public String toString() {
         return
 //                "Subject{" +
-                "subjectId=" + subjectId ;
+                "subjectId=" + subjectId +
 //                ", subjectName='" + subjectName + '\'' +
 //                ", subjectCourse=" + subjectCourse +
-//                ", subjectKnowledge=" + subjectKnowledge +
+                ", subjectKnowledge=" + subjectKnowledge +
 //                ", subjectScore=" + subjectScore +
-//                ", subjectDifficulty=" + subjectDifficulty +
-//                ", subjectType='" + subjectType + '\'' +
+                ", subjectDifficulty=" + subjectDifficulty +
+                ", subjectType='" + subjectType + '\'' ;
 //                ", subjectDescribe='" + subjectDescribe + '\'' +
 //                ", subjectAnswer='" + subjectAnswer + '\'' +
 //                ", subjectShare=" + subjectShare +

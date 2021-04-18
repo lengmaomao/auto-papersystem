@@ -3,11 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>添加试题</title>
+    <title>题库管理系统</title>
 
     <script src="/layui/layui.js"></script>
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-    <script src="/js/paper/paper.js"></script>
+<!--    <script src="/js/paper/paper.js"></script>-->
+    <script src="/js/index.js"></script>
 
     <link rel="stylesheet" href="/layui/css/layui.css"/>
 </head>
@@ -15,18 +16,10 @@
 <!--    顶部菜单-->
 <div class="top-menu layui-header header header-doc">
     <ul class="layui-nav" lay-filter="">
-        <li class="layui-nav-item"><a href="">最新活动</a></li>
-        <li class="layui-nav-item layui-this"><a href="">产品</a></li>
-        <li class="layui-nav-item"><a href="">大数据</a></li>
-        <li class="layui-nav-item">
-            <a href="javascript:;">解决方案</a>
-            <dl class="layui-nav-child"> <!-- 二级菜单 -->
-                <dd><a href="">移动模块</a></dd>
-                <dd><a href="">后台模版</a></dd>
-                <dd><a href="">电商平台</a></dd>
-            </dl>
-        </li>
-        <li class="layui-nav-item"><a href="">社区</a></li>
+        <li class="layui-nav-item"><a href="">1</a></li>
+        <li class="layui-nav-item layui-this"><a href="">主页</a></li>
+        <li class="layui-nav-item"><a href="">2</a></li>
+        <li class="layui-nav-item"><a href="">4</a></li>
     </ul>
 </div>
 <!--    左边的菜单-->
@@ -37,8 +30,7 @@
             <a href="javascript:;">试卷管理</a>
             <dl class="layui-nav-child">
                 <dd><a href="javascript:;" onclick="addPaper()">新建试卷</a></dd>
-                <dd><a href="javascript:;">我的试卷</a></dd>
-                <dd><a href="javascript:;">试卷库</a></dd>
+                <dd><a href="javascript:;" onclick="myPaper()">我的试卷</a></dd>
             </dl>
         </li>
         <li class="layui-nav-item">
@@ -49,8 +41,6 @@
                 <dd><a href="javascript:" onclick="publicSubjects()">公共题库</a></dd>
             </dl>
         </li>
-        <li class="layui-nav-item"><a href="">没想好</a></li>
-        <li class="layui-nav-item"><a href="">真没想好</a></li>
     </ul>
 </div>
 <!--页面主体部分-->
@@ -71,6 +61,7 @@
                 })
             })
         }
+
         //调用jQuery.load()方法添加添加试题模块的html
         function addSubject() {
             $("#infoPanelBody").empty();

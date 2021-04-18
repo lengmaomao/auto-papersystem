@@ -1,0 +1,55 @@
+<script type="text/javascript" src="apache-echarts-5.0.2/"></script>
+<div id="building" ></div>
+<script>
+    //调方法传值
+    getBuilding();
+    function getBuilding(){
+        var self =  this;
+        http({
+            url: this.api+'/WyReports/buildingReport',
+            dataType: 'json',
+            type: 'post',
+            success: function(resp) {
+                buildingReport(resp);//加载报表
+            }
+        })
+    };
+    //报表
+    function buildingReport(data){
+        var x = new Array();
+        var y = new Array();
+        for (var i=0;i<data.length;i++) {
+            x[i] = data[i].name;
+            y[i] = data[i].count;
+        }
+        var myChart = echarts.init(document.getElementById('building'));
+        option = {
+            title: {
+                text: '楼栋统计人数',
+                left: 'center',
+                top: 20,
+                textStyle: {
+                    color: 'black'
+                }
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },xAxis: {
+                type: 'category',
+                data: x
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: y,
+                type: 'bar',
+                barWidth : 25
+            }]
+        };
+        myChart.setOption(option);
+    };
+</script>

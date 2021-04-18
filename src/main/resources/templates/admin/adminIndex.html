@@ -1,10 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>管理员界面</title>
+    <title>题库管理系统----管理员</title>
+
+    <script src="/layui/layui.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!--    <script src="/js/paper/paper.js"></script>-->
+    <script src="/js/index.js"></script>
+
+    <link rel="stylesheet" href="/layui/css/layui.css"/>
 </head>
-<body>
-    这是管理员界面
+<body >
+<!--    顶部菜单-->
+<div class="top-menu layui-header header header-doc">
+    <ul class="layui-nav" lay-filter="">
+        <li class="layui-nav-item layui-this"><a href="">主页</a></li>
+    </ul>
+</div>
+<!--    左边的菜单-->
+<div class="left-menu" >
+    <ul class="layui-nav layui-nav-tree layui-nav-side" lay-filter="test" style="padding-top: 60px">
+        <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
+        <li class="layui-nav-item">
+            <a href="javascript:;">试卷管理</a>
+            <dl class="layui-nav-child">
+                <dd><a href="javascript:;" onclick="addPaper()">新建试卷</a></dd>
+                <dd><a href="javascript:;" onclick="myPaper()">我的试卷</a></dd>
+                <dd><a href="javascript:;">试卷库</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item">
+            <a href="javascript:;">题库</a>
+            <dl class="layui-nav-child">
+                <dd><a href="javascript:" onclick="mySubject()">我的试题</a></dd>
+                <dd><a href="javascript:" onclick="addSubject()">新建试题</a></dd>
+                <dd><a href="javascript:" onclick="publicSubjects()">公共题库</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item">
+            <a href="javascript:;">管理员功能</a>
+            <dl class="layui-nav-child">
+                <dd><a href="javascript:" onclick="teacherManage()">教师管理</a></dd>
+                <dd><a href="javascript:" onclick="addSubject()">试卷管理</a></dd>
+                <dd><a href="javascript:" onclick="dataStat()">数据统计</a></dd>
+                <dd><a href="javascript:" onclick="publicSubjects()">系统日志</a></dd>
+            </dl>
+        </li>
+    </ul>
+</div>
+<!--页面主体部分-->
+<div class="layui-row" style="padding-top: 60px">
+    <div class="layui-col-md3">a</div>
+    <div class="layui-col-md6" id="infoPanelBody">
+
+    </div>
+
+    <script>
+        //调用jQuery.load()方法添加添加试卷的html
+        function addPaper() {
+            $("#infoPanelBody").empty();
+            $("#infoPanelBody").load("/papers/addPaper/",function () {
+                layui.use('form',function () {
+                    const form = layui.form;
+                    form.render();
+                })
+            })
+        }
+
+        //调用JQuery.load()方法进行dataStat页面添加
+        function dataStat() {
+            $("#infoPanelBody").empty();
+            $("#infoPanelBody").load("/admin/stats",function () {
+                layui.use('form', function(){
+                    const form = layui.form;
+                    form.render();
+                });
+            });
+        }
+        //调用jQuery.load()方法添加添加试题模块的html
+        function addSubject() {
+            $("#infoPanelBody").empty();
+            $("#infoPanelBody").load("/subjects/addSubjects/",function () {
+                layui.use('form', function(){
+                    const form = layui.form;
+                    form.render();
+                });
+            });
+        }
+        //调用jQuery.load()方法添加题目模块的html
+        function publicSubjects() {
+            $("#infoPanelBody").empty();
+            $("#infoPanelBody").load("/subjects/subjectList/",function () {
+                layui.use('form', function(){
+                    const form = layui.form;
+                    form.render();
+                });
+            });
+        }
+        //调用jQuery.load()方法添加我的试题模块的html
+        function mySubject() {
+            $("#infoPanelBody").empty();
+            $("#infoPanelBody").load("/subjects/mySubject/",function () {
+                layui.use('form', function(){
+                    const form = layui.form;
+                    form.render();
+                });
+            });
+        }
+    </script>
+</div>
+
+
 </body>
 </html>

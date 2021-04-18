@@ -1,0 +1,69 @@
+<!--试卷表格-->
+<div id="paper_table" class="layui-table" lay-filter="paper_table" lay-size="lg" lay-skin="nob" lay-even></div>
+<script>
+    //个人试卷大小
+    let paperNumber;
+    getUserPaperNums();
+    layui.use('table',function () {
+        const table = layui.table;
+        //表格初始化
+        table.render({
+            page: true,
+            skin: 'nob',
+            even: true,
+            elem: '#paper_table',
+            //测试选择所有模块,登录模块完成后进行个人查询
+            url: '/paper/user',
+            request: {
+                pageName: 'pageNumber', //页码的参数名称，默认：page
+                limitName: 'nums' //每页数据量的参数名，默认：limit
+            },
+            parseData: function(res){
+                console.log(res);
+                const data=[];
+                for (let item in res){
+                    data.push({"paperId":res[item].paperId,"paperName":res[item].paperName,"paperCourse":res[item].paperCourse.courseBook+' '+res[item].paperCourse.courseName,"paperScore":res[item].paperScore,"difficulty":res[item].difficulty})
+                }
+                console.log(data);
+                return{
+                    "code": 0,
+                    "msg": "",
+                    "count": paperNumber,
+                    "data": data,
+                }
+            },
+            cols:[
+                [
+                    {field: 'paperId', title: 'ID', sort: true}
+                    ,{field: 'paperName', title: '试卷名称', templet: '#goPage'}
+                    ,{field: 'paperCourse', title: '科目名'}
+                    ,{field: 'paperScore', title: '分值'}
+                    ,{field: 'difficulty',title: '难度'}
+                ]
+            ]
+        });
+
+        //监听点击事件
+        table.on('tool(paper_table)',function(obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            const subject_data = obj.data; //获得当前行数据
+            const layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            const tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+
+
+        })
+    })
+    function getUserPaperNums() {
+        let paperNum;
+        $.ajax({
+            url: '/paper/user/nums',
+            type: 'GET',
+            success: function(data){
+                paperNumber = data;
+            }
+        })
+    }
+</script >
+
+<script type="text/html" id="goPage">
+<a href="/papers/showPaper/{{d.paperId}}">{{d.paperName}}</a>
+</script>

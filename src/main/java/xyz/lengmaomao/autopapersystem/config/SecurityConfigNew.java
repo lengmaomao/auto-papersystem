@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import xyz.lengmaomao.autopapersystem.handle.LoginSuccessHandle;
 
 import javax.annotation.Resource;
 
@@ -32,11 +33,18 @@ public class SecurityConfigNew extends WebSecurityConfigurerAdapter {
         http.formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/user/login")
-                .defaultSuccessUrl("/index")
+                .defaultSuccessUrl("/index").successHandler(new LoginSuccessHandle())
             .and().authorizeRequests()
                 .antMatchers("/subject/**").permitAll()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/admin").hasAuthority("ROLE_ADMIN")
+                .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated() //任何请求都必须经过身份验证
+            .and()
+                .logout()
+                .logoutUrl("/user/logout")
+                .logoutSuccessUrl("/user/logout/success")
+                .deleteCookies("JSESSIONID")
             .and().csrf()
                 .disable();
     }

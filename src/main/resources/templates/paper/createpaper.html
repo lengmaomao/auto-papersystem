@@ -70,7 +70,8 @@
                 <div class="subject_footer">
                     <div class="layui-btn-container">
                         <button type="button" class="layui-btn" id="next_subject">下一题</button>
-                        <button type="button" class="layui-btn layui-btn-danger" id="delete_subject">删除此题</button>
+                        <button type="button" class="layui-btn" id="reload_paper">重新生成试卷</button>
+                        <button type="button" class="layui-btn" id="submit_paper">确认并生成</button>
                     </div>
                 </div>
             </div>
@@ -78,45 +79,11 @@
     </div>
 
 </div>
-<!--添加试题弹出层内容-->
-<div class="" id="#add_subject_layer"></div>
-<div id="add_subject_content"></div>
+
 <script>
-    //获取试卷内容
-    getPaper();
-    //获取对应的paper
-    getSpareSubject();
-        function getPaper() {
-        let paper = null;
-        //获取创建的paper
-        $.ajax({
-            url: "/paper/"+getPaperId(),
-            success: function (data) {
-                paper = data;
-                console.log("paper1");
-                console.log(paper);
-                paperTemp = data;
-                changeNav(paper);
-            }
-        })
-    }
-    //获取试卷额外试题
-    function getSpareSubject() {
-            $.ajax({
-                url: "/paper/spareSubject/"+getPaperId(),
-                success: function (data) {
-                    for (let n in data){
-                        console.log(data[n])
-                    }
-                }
-            })
-    }
-    // 获取url中的paperId
-    function getPaperId() {
-        let url = window.location.pathname;
-        let id = url.substring(url.lastIndexOf('/') + 1, url.length);
-        return id;
-    }
+    //初次加载页面修改数据
+    getTempPaper();
+
 </script>
 </body>
 </html>

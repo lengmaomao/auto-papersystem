@@ -1,0 +1,22 @@
+.paper_type_badge{
+    padding: 5px;
+    margin: 0 15px 0 15px ;
+    align-content: center;
+}
+.paper_name{
+    font-size: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-wrap: normal;
+    max-width: 25em;
+}
+#subject_dec,#subject_answer{
+    background: #fff;
+    padding: 20px;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}

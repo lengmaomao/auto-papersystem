@@ -2,8 +2,7 @@ package xyz.lengmaomao.autopapersystem.beans;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
-import xyz.lengmaomao.autopapersystem.VO.PaperCreateVO;
+import xyz.lengmaomao.autopapersystem.VO.PaperCreateRule;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -17,7 +16,7 @@ public class Paper {
     /**
      * 难度权重
      */
-    public static final double DIFFCULTY_WEIGHt = 0.50;
+    public static final double DIFFICULTY_WEIGHT = 0.50;
     //试卷ID
     private int paperId;
 
@@ -65,8 +64,8 @@ public class Paper {
     }
 
     //获取难度系数 (计算试卷个体难度系数 计算公式： 每题难度*分数求和除总分)
-    public double getDifficulty(){
-        this.paperScore = getPaperScore();
+    public double makeDifficulty(){
+        this.paperScore = makePaperScore();
         if (difficulty == 0){
             double singleDifficulty = 0;
             for (Subject subject: totalSubjects){
@@ -79,8 +78,8 @@ public class Paper {
     }
 
     //计算试卷知识点覆盖率 公式为：个体包含的知识点/期望包含的知识点
-    public void setKpCoverage(PaperCreateVO rule){
-        this.paperKnowledge = getPaperKnowledge();
+    public void setKpCoverage(PaperCreateRule rule){
+        this.paperKnowledge = makePaperKnowledge();
         //符合知识点题目计数
         int count=0;
         //获取规则的知识点
@@ -96,7 +95,7 @@ public class Paper {
         kPCoverage = (double) count / (double) paperPoints.size();
     }
 
-    /*
+    /**
      * 计算个体适应度 公式为：f=1-(1-M/N)*f1-|EP-P|*f2
      * 其中M/N为知识点覆盖率，EP为期望难度系数，P为种群个体难度系数，f1为知识点分布的权重
      * ，f2为难度系数所占权重。当f1=0时退化为只限制试题难度系数，当f2=0时退化为只限制知识点分布
@@ -105,8 +104,8 @@ public class Paper {
      * @param f1   知识点分布的权重
      * @param f2   难度系数的权重
      */
-    public void setAdaptationDegree(PaperCreateVO rule,double f1,double f2){
-            adaptationDegree =1 -  (1 - getKPCoverage())*f1 - Math.abs(rule.getDifficult()/10 - getDifficulty())*f2 ;
+    public void makeAdaptationDegree(PaperCreateRule rule, double f1, double f2){
+            adaptationDegree =1 -  (1 - getKPCoverage())*f1 - Math.abs(rule.getDifficult()/10 - makeDifficulty())*f2 ;
     }
 
     //是否包含题目, 题目查重
@@ -127,7 +126,7 @@ public class Paper {
     }
 
     //设置试卷知识点
-    public Set<Knowledge> getPaperKnowledge(){
+    public Set<Knowledge> makePaperKnowledge(){
         Set<Knowledge> points = new HashSet<>();
         for (Subject subject:totalSubjects){
             Knowledge point;
@@ -139,7 +138,7 @@ public class Paper {
     }
 
     //设置试卷总分
-    public int getPaperScore(){
+    public int makePaperScore(){
         int score = 0;
         for (Subject subject:totalSubjects){
             score += subject.getSubjectScore();

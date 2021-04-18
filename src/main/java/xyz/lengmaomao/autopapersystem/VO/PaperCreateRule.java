@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class PaperCreateVO {
+public class PaperCreateRule {
     //试卷名
     String paperName;
     //权限设置

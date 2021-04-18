@@ -89,11 +89,11 @@
     </select>
 <!--    查询所有题目-->
     <select id="getAllSubject" resultMap="subject">
-        SELECT * FROM subject LEFT JOIN course ON subject_course = course_id LEFT JOIN knowledge ON subject_knowledge = knowledge_id WHERE subject_share = true
+        SELECT * FROM subject LEFT JOIN course ON subject_course = course_id LEFT JOIN knowledge ON subject_knowledge = knowledge_id WHERE subject_share = true LIMIT #{offset},#{nums}
     </select>
     <!--    通过用户获取所有题目-->
     <select id="getSubjectsByUser" resultMap="subject">
-        SELECT * FROM subject LEFT JOIN course ON subject_course = course_id LEFT JOIN knowledge ON subject_knowledge = knowledge_id WHERE subject_author = #{subjectAuthor}
+        SELECT * FROM subject LEFT JOIN course ON subject_course = course_id LEFT JOIN knowledge ON subject_knowledge = knowledge_id WHERE subject_author = #{userId} LIMIT #{page},#{nums}
     </select>
 <!--    获取对应实体类型列表-->
     <select id="getSubjectByType" resultMap="subject">
@@ -114,5 +114,22 @@
         AND s.subject_type = #{type}
         ORDER BY RAND()
         LIMIT 1
+    </select>
+<!--    查询题目数量-->
+    <select id="getSubjectsNum" resultType="int">
+        SELECT COUNT(*) FROM `subject` s, knowledge k, user_course uc
+        WHERE s.subject_course = uc.course_id
+        AND k.knowledge_course = uc.course_id
+        AND uc.user_id = #{user}
+        AND s.subject_type = #{type}
+    </select>
+
+<!--    查询所有公开题目数量-->
+    <select id="getPublicSubjectCount" resultType="int">
+        SELECT COUNT(*) FROM subject WHERE subject_share = true LIMIT #{page},#{nums}
+    </select>
+<!--    获取用户下所有题目数量-->
+    <select id="getMySubjectNum" resultType="int">
+        SELECT COUNT(*) FROM subject WHERE subject_author = #{userId}
     </select>
 </mapper>

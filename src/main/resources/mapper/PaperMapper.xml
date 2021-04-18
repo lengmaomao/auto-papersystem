@@ -3,11 +3,35 @@
 <mapper namespace="xyz.lengmaomao.autopapersystem.mapper.PaperMapper">
 
     <resultMap id="paper" type="xyz.lengmaomao.autopapersystem.beans.Paper">
+        <result column="paper_limit" property="paperLimit"/>
         <association property="paperCourse" column="paper_course" javaType="xyz.lengmaomao.autopapersystem.beans.Course"/>
+        <collection property="totalSubjects" javaType="ArrayList" ofType="xyz.lengmaomao.autopapersystem.beans.Subject">
+<!--            <result column="subject_share" property="subjectShare"/>-->
+        </collection>
     </resultMap>
-<!--    获取试卷-->
+<!--    获取试卷(已经添加到了试卷的题目)-->
     <select id="getPaper" resultMap="paper">
-        SELECT * FROM paper INNER JOIN course ON paper_course = course_id WHERE paper_id = #{paperId}
+        SELECT
+            *
+        FROM
+            paper
+            LEFT JOIN course ON paper.paper_course = course.course_id
+            LEFT JOIN paper_subject ON paper.paper_id = paper_subject.paper_id
+            LEFT JOIN subject ON subject.subject_id = paper_subject.subject_id
+        WHERE
+            paper.paper_id = #{paperId}
+    </select>
+<!--    获取试卷还未正式添加到试卷的题目-->
+    <select id="getPaperSpareSubject" resultType="xyz.lengmaomao.autopapersystem.beans.Subject">
+        SELECT
+            *
+        FROM
+            paper_subject
+            LEFT JOIN subject ON subject.subject_id = paper_subject.subject_id
+        WHERE
+            paper_subject.paper_id = #{paperId}
+        AND
+            paper_subject.subject_paper_id = 0
     </select>
 <!--    删除试卷-->
     <delete id="deletePaper">
@@ -50,8 +74,8 @@
     </insert>
 <!--    插入试卷-题目中间表-->
     <insert id="insertStagPaper" useGeneratedKeys="true">
-        INSERT INTO paper_subject (paper_id,subject_id)
-        VALUES (#{paperId},#{subjectId})
+        INSERT INTO paper_subject (paper_id,subject_id,subject_paper_id)
+        VALUES (#{paperId},#{subjectId},#{subjectPaperId})
     </insert>
 <!--    删除试卷-题目中间表-->
     <delete id="deleteStagPaper">
@@ -66,7 +90,7 @@
         </where>
     </delete>
 <!--    查询试卷(使用模式匹配查询)-->
-    <select id="findPaperByTemplate" parameterType="xyz.lengmaomao.autopapersystem.beans.Paper" resultType="xyz.lengmaomao.autopapersystem.beans.Paper">
+    <select id="findPaperByTemplate" parameterType="xyz.lengmaomao.autopapersystem.beans.Paper" resultMap="paper">
         SELECT * FROM paper LEFT JOIN course ON paper_course = course_id
         <where>
             <if test="paperName != null">
@@ -86,5 +110,12 @@
 <!--    查询试卷(用于数据展示,不包含试题,不包含未公开试卷)-->
     <select id="findAllPaper" resultType="xyz.lengmaomao.autopapersystem.beans.Paper">
         SELECT * FROM paper WHERE paper_limit = true
+    </select>
+<!--    获取用户所有试卷-->
+    <select id="getUserPaper" resultMap="paper">
+         SELECT course.*,p.paper_id,p.paper_score,p.paper_name,p.paper_create_time,p.paper_author FROM paper p INNER JOIN course ON paper_course = course_id WHERE paper_author = #{userId} LIMIT #{pageNumber},#{nums}
+    </select>
+    <select id="findUserPaperNums" resultType="int">
+        SELECT COUNT(*) FROM paper WHERE paper_author = #{userId}
     </select>
 </mapper>

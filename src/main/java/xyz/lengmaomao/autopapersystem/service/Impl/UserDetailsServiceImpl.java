@@ -27,7 +27,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (users.size()==0)
             throw new UsernameNotFoundException("用户不存在");
         xyz.lengmaomao.autopapersystem.beans.User user = users.get(0);
-        List<GrantedAuthority> auths = AuthorityUtils.commaSeparatedStringToAuthorityList("role");
+        List<GrantedAuthority> auths = AuthorityUtils.commaSeparatedStringToAuthorityList(user.getUserRole());
         return new User(String.valueOf(user.getUserId()),new BCryptPasswordEncoder().encode(user.getUserPassword()),auths);
     }
 }

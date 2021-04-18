@@ -3,21 +3,16 @@ package xyz.lengmaomao.autopapersystem;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import xyz.lengmaomao.autopapersystem.VO.KnowledgeVO;
-import xyz.lengmaomao.autopapersystem.VO.PaperCreateVO;
+import xyz.lengmaomao.autopapersystem.VO.PaperCreateRule;
 import xyz.lengmaomao.autopapersystem.VO.SubjectTypeVO;
 import xyz.lengmaomao.autopapersystem.beans.*;
-import xyz.lengmaomao.autopapersystem.mapper.CourseMapper;
-import xyz.lengmaomao.autopapersystem.mapper.SubjectMapper;
 import xyz.lengmaomao.autopapersystem.service.SubjectService;
 import xyz.lengmaomao.autopapersystem.service.UserService;
 import xyz.lengmaomao.autopapersystem.utils.DB;
 
 import javax.annotation.Resource;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @SpringBootTest
 class AutoPapersystemApplicationTests {
@@ -39,14 +34,14 @@ class AutoPapersystemApplicationTests {
         points.add(knowledge2);
         points.add(knowledge3);
 
-        PaperCreateVO paperCreateVO = new PaperCreateVO();
-        paperCreateVO.setDifficult(2);
-        paperCreateVO.setKnowledge(points);
+        PaperCreateRule paperCreateRule = new PaperCreateRule();
+        paperCreateRule.setDifficult(2);
+        paperCreateRule.setKnowledge(points);
         DB db = new DB();
         papers = db.getPaperDB();
         for (Paper paper : papers){
-            paper.setKpCoverage(paperCreateVO);
-            paper.setAdaptationDegree(paperCreateVO,Paper.KP_WEIGHT,Paper.DIFFCULTY_WEIGHt);
+            paper.setKpCoverage(paperCreateRule);
+            paper.makeAdaptationDegree(paperCreateRule,Paper.KP_WEIGHT,Paper.DIFFICULTY_WEIGHT);
 //            System.out.println("试卷"+paper.getPaperId()+"知识点覆盖率:"+paper.getKPCoverage()+" 难度系数:"+paper.getDifficulty()+" 适应度:"+paper.getAdaptationDegree());
             System.out.println(paper.getAdaptationDegree());
         }
@@ -90,7 +85,7 @@ class AutoPapersystemApplicationTests {
         points.add(knowledge1);
         points.add(knowledge2);
         points.add(knowledge3);
-        PaperCreateVO rule = new PaperCreateVO();
+        PaperCreateRule rule = new PaperCreateRule();
         SubjectTypeVO subjectTypeVO = new SubjectTypeVO();
         subjectTypeVO.setSingle_select(5);
         rule.setSubjects(subjectTypeVO);
@@ -126,7 +121,7 @@ class AutoPapersystemApplicationTests {
         knowledge1.setValue(1);
         points.add(knowledge1);
 
-        PaperCreateVO rule = new PaperCreateVO();
+        PaperCreateRule rule = new PaperCreateRule();
         rule.setDifficult(2);
         rule.setKnowledge(points);
         rule.setSubjects(subjectTypeVO);
@@ -142,13 +137,13 @@ class AutoPapersystemApplicationTests {
             // 初始化种群
             Population population = new Population(20, true, rule);
             Paper paper = population.getFitness();
-            System.out.println("初次适应度  " + paper.getAdaptationDegree() +" 难度系数:"+paper.getDifficulty() + " 知识点覆盖率:" + paper.getKPCoverage());
+            System.out.println("初次适应度  " + paper.getAdaptationDegree() +" 难度系数:"+paper.makeDifficulty() + " 知识点覆盖率:" + paper.getKPCoverage());
             while (count < runCount && population.getFitness().getAdaptationDegree() < expand) {
                 count++;
                 System.out.println("开始第"+count+"轮进化");
                 population = GA.evolvePopulation(population, rule);
 
-                System.out.println("第 " + count + " 次进化，适应度为： " + population.getFitness().getAdaptationDegree() +" 难度系数:"+paper.getDifficulty() + " 知识点覆盖率:" + paper.getKPCoverage());
+                System.out.println("第 " + count + " 次进化，适应度为： " + population.getFitness().getAdaptationDegree() +" 难度系数:"+paper.makeDifficulty() + " 知识点覆盖率:" + paper.getKPCoverage());
                 System.out.println("第"+count+"次进化,最佳适应度个体:" + population.getFitness().toString());
             }
             System.out.println("进化次数： " + count);
@@ -158,6 +153,11 @@ class AutoPapersystemApplicationTests {
         System.out.println(resultPaper);
     }
 
+    @Test
+    //获取题目数量
+    public void getSubjectNums(){
+        System.out.println(subjectService.getSingleSubjectByType(Subject.SUBJECT_TYPE_SELECT_MULTIPLE,1));
+    }
 }
 
 

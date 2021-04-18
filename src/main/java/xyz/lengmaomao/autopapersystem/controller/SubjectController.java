@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import xyz.lengmaomao.autopapersystem.beans.Paper;
 import xyz.lengmaomao.autopapersystem.beans.Subject;
+import xyz.lengmaomao.autopapersystem.service.PaperService;
 import xyz.lengmaomao.autopapersystem.service.SubjectService;
 
 import javax.annotation.Resource;
@@ -19,6 +20,8 @@ import java.util.List;
 public class SubjectController {
     @Resource
     SubjectService subjectService;
+    @Resource
+    PaperService paperService;
 
     /*
         根据id获取固定的题目
@@ -44,9 +47,9 @@ public class SubjectController {
      */
     @RequestMapping("/find_all_subject")
     @ResponseBody
-    public List<Subject> findAllSubject(){
+    public List<Subject> findAllSubject(int pageNumber,int nums){
         System.out.println("调用接口");
-        return subjectService.getAllSubject();
+        return subjectService.getAllSubject(pageNumber,nums);
     }
     /*
         删除subject
@@ -95,13 +98,39 @@ public class SubjectController {
     @ResponseBody
     public void addSubjectToPaper(int subjectId, int paperId ){
         System.out.println("subjectId:"+subjectId+" paperId:"+paperId);
+        paperService.insertStagPaper(paperId,subjectId,0);
+    }
+
+    //将题目从试卷删除
+    @RequestMapping("/delete_subject_from_paper")
+    @ResponseBody
+    public void deleteSubjectFromPaper(int subjectId, int paperId){
+        paperService.deleteStagPaper(paperId,subjectId);
     }
 
     //查询某个用户所有的试题
     @RequestMapping("/user")
     @ResponseBody
-    public List<Subject> findSubjectsByUser(HttpServletRequest httpServletRequest){
+    public List<Subject> findSubjectsByUser(HttpServletRequest httpServletRequest,int page,int nums){
         int userId = Integer.valueOf(httpServletRequest.getUserPrincipal().getName());
-        return subjectService.getSubjectsByUser(userId);
+        System.out.println("userId:"+userId+" page:"+page+" nums:"+nums);
+        return subjectService.getSubjectsByUser(userId,page,nums);
+    }
+    //获取全部公开试题的数量
+    @RequestMapping("/getPublicSubjectCount")
+    @ResponseBody
+    public int getPublicSubjectCount(int page,int nums){
+        return subjectService.getPublicSubjectCount(page,nums);
+    }
+    /*
+    返回用户下所有题目数量
+     */
+    @RequestMapping("/my/num")
+    @ResponseBody
+    public int getMySubjectNum(HttpServletRequest httpServletRequest){
+        int userId = Integer.valueOf(httpServletRequest.getUserPrincipal().getName());
+        int num = subjectService.getMySubjectNum(userId);
+        System.out.println("mysubjectnums:"+num);
+        return num;
     }
 }

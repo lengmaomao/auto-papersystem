@@ -46,13 +46,13 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public List<Subject> getAllSubject() {
-        return subjectMapper.getAllSubject();
+    public List<Subject> getAllSubject(int paperNumber,int nums) {
+        return subjectMapper.getAllSubject((paperNumber-1)*nums,nums);
     }
 
     @Override
-    public List<Subject> getSubjectsByUser(int userId) {
-        return subjectMapper.getSubjectsByUser(userId);
+    public List<Subject> getSubjectsByUser(int userId,int page,int nums) {
+        return subjectMapper.getSubjectsByUser(userId,page*(page-1),nums);
     }
 
     @Override
@@ -63,6 +63,21 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public Subject getSingleSubjectByType(String type,int user) {
         return subjectMapper.getSingleSubjectByType(type,user);
+    }
+
+    @Override
+    public int getSubjectsNum(String type, int user) {
+        return subjectMapper.getSubjectsNum(type,user);
+    }
+
+    @Override
+    public int getPublicSubjectCount(int page,int nums) {
+        return subjectMapper.getPublicSubjectCount(page*(page-1),nums);
+    }
+
+    @Override
+    public int getMySubjectNum(int userId) {
+        return subjectMapper.getMySubjectNum(userId);
     }
 
 

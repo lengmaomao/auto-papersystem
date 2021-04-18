@@ -172,8 +172,10 @@
     </div>
 </div>
 <script>
+    let pageNum;
     layui.use('table',function () {
         const table = layui.table;
+        getMySubjectNum();
         //表格初始化
         table.render({
             page: true,
@@ -182,6 +184,10 @@
             elem: '#subject_table',
             //测试选择所有模块,登录模块完成后进行个人查询
             url: 'subject/user',
+            request:{
+                pageName: "page",
+                limitName: "nums"
+            },
             parseData: function(res){
                 console.log(res);
                 const data=[];
@@ -192,7 +198,7 @@
                 return{
                     "code": 0,
                     "msg": "",
-                    "count": data.length,
+                    "count": pageNum,
                     "data": data,
                 }
             },
@@ -452,6 +458,15 @@
             const form = layui.form;
             const layer = layui.layer;
             setSubjectForm(subjectId);
+        })
+    }
+    //获取mysubject题目数量
+    function getMySubjectNum() {
+        $.ajax({
+            url: "/subject/my/num",
+            success: function (data) {
+                pageNum = data;
+            }
         })
     }
 </script>
