@@ -30,7 +30,6 @@ public class SubjectController {
     @ResponseBody
     public Subject getSubject(@PathVariable("subjectId")int subjectId){
          Subject subject = subjectService.getSubject(subjectId);
-        System.out.println("传回的subject:"+subject.toString());
          return subject;
     }
     /*
